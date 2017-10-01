@@ -1,4 +1,8 @@
+import logging
+
 from scrapy import http
+
+logger = logging.getLogger(__name__)
 
 
 def parse(url, html):
@@ -15,21 +19,19 @@ def _parse_ruled_me_response(url, response):
     category_raw = ''.join(
         response.xpath('//div[@class="postCategories"]//a//text()')
         .extract()).strip()
-    return {
-        'title': title,
-        'url': url,
-        'category': _canonicalize_ruled_me_category(category_raw)
-    }
+    try:
+        category = _canonicalize_ruled_me_category(category_raw)
+    except:
+        logger.error('failed to find category for %s -> %s', url, category_raw)
+        raise
+    return {'title': title, 'url': url, 'category': category}
 
 
 def _parse_ketoconnect_response(url, response):
     title_raw = ''.join(response.xpath('//h1//text()').extract()).strip()
     title = title_raw.split('|')[0].strip()
-    return {
-        'title': title,
-        'url': url,
-        'category': _find_ketoconnect_category(url)
-    }
+    category = _find_ketoconnect_category(url)
+    return {'title': title, 'url': url, 'category': category}
 
 
 def _canonicalize_ruled_me_category(category):
