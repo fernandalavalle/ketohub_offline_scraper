@@ -38,7 +38,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
 
 class ScrapeRuledMeHtml(unittest.TestCase):
 
-    def test_scrapes_title_and_category(self):
+    def test_scrapes_title_and_simple_category(self):
         self.assertEqual(
             html_parse.parse('https://www.ruled.me/keto-beef-wellington/', """
 <html>
@@ -50,4 +50,18 @@ class ScrapeRuledMeHtml(unittest.TestCase):
                 'title': 'Keto Beef Wellington',
                 'url': 'https://www.ruled.me/keto-beef-wellington/',
                 'category': 'entree',
+            })
+
+    def test_scrapes_title_and_hierarchical_category(self):
+        self.assertEqual(
+            html_parse.parse('https://www.ruled.me/cauliflower-mac-cheese/', """
+<html>
+<h1>Cauliflower Mac & Cheese</h1>
+<div class="postCategories">
+Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-items/" title="Keto Recipes">Keto Recipes</a>
+</div>
+</html>"""), {
+                'title': 'Cauliflower Mac & Cheese',
+                'url': 'https://www.ruled.me/cauliflower-mac-cheese/',
+                'category': 'side',
             })
