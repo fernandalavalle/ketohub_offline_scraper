@@ -34,3 +34,20 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                     'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
                     'category': 'entree',
                 })
+
+
+class ScrapeRuledMeHtml(unittest.TestCase):
+
+    def test_scrapes_title_and_category(self):
+        self.assertEqual(
+            html_parse.parse('https://www.ruled.me/keto-beef-wellington/', """
+<html>
+<h1>Keto Beef Wellington</h1>
+<div class="postCategories">
+&gt; <a rel="nofollow" href="" title="Dinner">Dinner</a>
+</div>
+</html>"""), {
+                'title': 'Keto Beef Wellington',
+                'url': 'https://www.ruled.me/keto-beef-wellington/',
+                'category': 'entree',
+            })

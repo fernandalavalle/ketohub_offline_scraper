@@ -11,7 +11,15 @@ def parse(url, html):
 
 
 def _parse_ruled_me_response(url, response):
-    pass
+    title = str(response.xpath('//h1//text()').extract_first().strip())
+    category_raw = ''.join(
+        response.xpath('//div[@class="postCategories"]//a//text()')
+        .extract()).strip()
+    return {
+        'title': title,
+        'url': url,
+        'category': _canonicalize_ruled_me_category(category_raw)
+    }
 
 
 def _parse_ketoconnect_response(url, response):
@@ -22,6 +30,18 @@ def _parse_ketoconnect_response(url, response):
         'url': url,
         'category': _find_ketoconnect_category(url)
     }
+
+
+def _canonicalize_ruled_me_category(category):
+    return {
+        'Breakfast': 'breakfast',
+        'Lunch': 'entree',
+        'Dinner': 'entree',
+        'Dessert': 'dessert',
+        'Snacks': 'snack',
+        'Side items': 'side',
+        'Condiments': 'condiment',
+    }[category]
 
 
 # Hack workaround until we can automatically deduce categories for KetoConnect.
