@@ -54,6 +54,20 @@ class ScrapeRuledMeHtml(unittest.TestCase):
 
     def test_scrapes_title_and_hierarchical_category(self):
         self.assertEqual(
+            html_parse.parse('https://www.ruled.me/keto-sushi/', """
+<html>
+<h1>Keto Sushi</h1>
+<div class="postCategories">
+Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" title="Dinner">Dinner</a>
+</div>
+</html>"""), {
+                'title': 'Keto Sushi',
+                'url': 'https://www.ruled.me/keto-sushi/',
+                'category': 'entree',
+            })
+
+    def test_scrapes_title_and_reverse_hierarchical_category(self):
+        self.assertEqual(
             html_parse.parse('https://www.ruled.me/cauliflower-mac-cheese/', """
 <html>
 <h1>Cauliflower Mac & Cheese</h1>
