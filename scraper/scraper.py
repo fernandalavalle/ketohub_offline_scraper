@@ -25,6 +25,7 @@ def main(args):
     configure_logging()
     parsed = {}
     for recipe_key in os.listdir(args.input_root):
+        logging.info('parsing %s', recipe_key)
         if not os.path.exists(
                 os.path.join(args.input_root, recipe_key, 'main.jpg')):
             logger.warning('skipping %s', recipe_key)
@@ -38,8 +39,9 @@ def main(args):
         raw_html = open(html_path).read()
         try:
             parsed[recipe_key] = html_parse.parse(metadata['url'], raw_html)
-        except Exception:
-            pass
+        except Exception as ex:
+            logging.error('Failed to parse %s: %s', recipe_key, ex.message)
+    logging.info('Parsed %d successfully', len(parsed))
     print json.dumps(parsed)
 
 

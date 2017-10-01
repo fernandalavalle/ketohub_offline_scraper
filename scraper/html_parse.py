@@ -5,6 +5,14 @@ from scrapy import http
 logger = logging.getLogger(__name__)
 
 
+class Error(Exception):
+    pass
+
+
+class ParseError(Error):
+    pass
+
+
 def parse(url, html):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=url, body=html)
@@ -19,11 +27,18 @@ def _parse_ruled_me_response(url, response):
     category_hierarchy = ''.join(
         response.xpath('//div[@class="postCategories"]//text()')
         .extract()).strip()
+    category = None
     for category_raw in category_hierarchy.split('>'):
         category_stripped = str(category_raw.strip())
         if category_stripped:
-            category = _canonicalize_ruled_me_category(category_stripped)
+            try:
+                category = _canonicalize_ruled_me_category(category_stripped)
+            except KeyError:
+                continue
             break
+    if not category:
+        raise ParseError('Could not find category for %s -> %s' %
+                         (url, category_hierarchy))
     return {'title': title, 'url': url, 'category': category}
 
 
