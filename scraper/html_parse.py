@@ -1,5 +1,7 @@
 from scrapy import http
 
+import titles
+
 
 class Error(Exception):
     pass
@@ -19,7 +21,8 @@ def parse(metadata, html):
 
 
 def _parse_ruled_me_response(metadata, response):
-    title = response.xpath('//h1//text()').extract_first().strip()
+    title = titles.canonicalize(
+        response.xpath('//h1//text()').extract_first().strip())
     category_hierarchy = ''.join(
         response.xpath('//div[@class="postCategories"]//text()')
         .extract()).strip()
@@ -40,7 +43,7 @@ def _parse_ruled_me_response(metadata, response):
 
 def _parse_ketoconnect_response(metadata, response):
     title_raw = ''.join(response.xpath('//h1//text()').extract()).strip()
-    title = title_raw.split('|')[0].strip()
+    title = titles.canonicalize(title_raw.split('|')[0].strip())
     category_raw = _ketoconnect_category_from_url(metadata['referer'])
     category = _canonicalize_ketoconnect_category(category_raw)
     return {'title': title, 'url': metadata['url'], 'category': category}
