@@ -7,40 +7,50 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
 
     def test_scrapes_title_with_no_flavor_text(self):
         self.assertEqual(
-            html_parse.parse(
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/', """
+            html_parse.parse({
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'referer':
+                'https://www.ketoconnect.net/main-dishes/',
+            }, """
 <html>
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
 </h1>
 </html>"""), {
-                    'title': 'Keto Butter Chicken',
-                    'url':
-                    'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                    'category': 'entree',
-                })
+                'title': 'Keto Butter Chicken',
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'category': 'entree',
+            })
 
     def test_scrapes_title_and_removes_flavor_text(self):
         self.assertEqual(
-            html_parse.parse(
-                'https://www.ketoconnect.net/recipe/cauliflower-waffles/', """
+            html_parse.parse({
+                'url':
+                'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
+                'referer':
+                'https://www.ketoconnect.net/main-dishes/',
+            }, """
 <html>
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/cauliflower-waffles/">Cauliflower Waffles | Bacon and Cheddar!</a>
 </h1>
 </html>"""), {
-                    'title': 'Cauliflower Waffles',
-                    'url':
-                    'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
-                    'category': 'entree',
-                })
+                'title': 'Cauliflower Waffles',
+                'url':
+                'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
+                'category': 'entree',
+            })
 
 
 class ScrapeRuledMeHtml(unittest.TestCase):
 
     def test_scrapes_title_and_simple_category(self):
         self.assertEqual(
-            html_parse.parse('https://www.ruled.me/keto-beef-wellington/', """
+            html_parse.parse({
+                'url': 'https://www.ruled.me/keto-beef-wellington/'
+            }, """
 <html>
 <h1>Keto Beef Wellington</h1>
 <div class="postCategories">
@@ -54,7 +64,9 @@ class ScrapeRuledMeHtml(unittest.TestCase):
 
     def test_scrapes_title_and_hierarchical_category(self):
         self.assertEqual(
-            html_parse.parse('https://www.ruled.me/keto-sushi/', """
+            html_parse.parse({
+                'url': 'https://www.ruled.me/keto-sushi/'
+            }, """
 <html>
 <h1>Keto Sushi</h1>
 <div class="postCategories">
@@ -68,7 +80,10 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
 
     def test_scrapes_title_and_reverse_hierarchical_category(self):
         self.assertEqual(
-            html_parse.parse('https://www.ruled.me/cauliflower-mac-cheese/', """
+            html_parse.parse({
+                'url':
+                'https://www.ruled.me/cauliflower-mac-cheese/'
+            }, """
 <html>
 <h1>Cauliflower Mac & Cheese</h1>
 <div class="postCategories">
