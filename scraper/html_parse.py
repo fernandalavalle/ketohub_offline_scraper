@@ -1,8 +1,4 @@
-import logging
-
 from scrapy import http
-
-logger = logging.getLogger(__name__)
 
 
 class Error(Exception):
@@ -43,15 +39,10 @@ def _parse_ruled_me_response(metadata, response):
 
 
 def _parse_ketoconnect_response(metadata, response):
-    logger.info('parsing %s -> %s', metadata['url'], metadata['referer'])
     title_raw = ''.join(response.xpath('//h1//text()').extract()).strip()
-    logger.info('title: %s', title_raw)
     title = title_raw.split('|')[0].strip()
-    logger.info('title: %s', title)
     category_raw = _ketoconnect_category_from_url(metadata['referer'])
-    logger.info('category: %s', category_raw)
     category = _canonicalize_ketoconnect_category(category_raw)
-    logger.info('category: %s', category)
     return {'title': title, 'url': metadata['url'], 'category': category}
 
 
