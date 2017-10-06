@@ -90,7 +90,7 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
 Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-items/" title="Keto Recipes">Keto Recipes</a>
 </div>
 </html>"""), {
-                'title': 'Cauliflower Mac & Cheese',
+                'title': 'Cauliflower Mac and Cheese',
                 'url': 'https://www.ruled.me/cauliflower-mac-cheese/',
                 'category': 'side',
             })
