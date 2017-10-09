@@ -24,26 +24,27 @@ def configure_logging():
 def main(args):
     configure_logging()
     parsed = {}
-    for root in args.input_root:
-        for recipe_key in os.listdir(root):
-            logging.info('parsing %s', recipe_key)
-            if not os.path.exists(os.path.join(root, recipe_key, 'main.jpg')):
-                logger.warning(
-                    'skipping %s because main image is not available',
-                    recipe_key)
-                continue
-            metadata_path = os.path.join(root, recipe_key, 'metadata.json')
-            with open(metadata_path) as metadata_file:
-                metadata = json.load(metadata_file)
+    for recipe_key in os.listdir(args.input_root):
+        logging.info('parsing %s', recipe_key)
+        if not os.path.exists(
+                os.path.join(args.input_root, recipe_key, 'main.jpg')):
+            logger.warning('skipping %s because main image is not available',
+                           recipe_key)
+            continue
+        metadata_path = os.path.join(args.input_root, recipe_key,
+                                     'metadata.json')
+        with open(metadata_path) as metadata_file:
+            metadata = json.load(metadata_file)
 
-            html_path = os.path.join(root, recipe_key, 'index.html')
-            raw_html = open(html_path).read()
-            try:
-                parsed[recipe_key] = html_parse.parse(metadata, raw_html)
-            except Exception as ex:
-                logging.error('Failed to parse %s: %s', recipe_key, ex)
-                raise
-    logging.info('Parsed %d successfully', len(parsed))
+        html_path = os.path.join(args.input_root, recipe_key, 'index.html')
+        raw_html = open(html_path).read()
+        try:
+            parsed[recipe_key] = html_parse.parse(metadata, raw_html)
+        except Exception as ex:
+            logging.error('Failed to parse %s: %s', recipe_key, ex)
+            raise
+    logging.info('Parsed %d/%d successfully',
+                 len(parsed), len(os.listdir(args.input_root)))
     print json.dumps(parsed)
 
 
@@ -51,5 +52,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog='KetoHub Offline HTML Scraper',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-i', '--input_root', default=[], action='append')
+    parser.add_argument('-i', '--input_root')
     main(parser.parse_args())
