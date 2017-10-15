@@ -1,3 +1,5 @@
+import urlparse
+
 from scrapy import http
 
 import titles
@@ -14,10 +16,18 @@ class ParseError(Error):
 def parse(metadata, html):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=metadata['url'], body=html)
-    if metadata['url'].find('ruled.me') >= 0:
+    domain = _parse_domain(metadata['url'])
+    if domain == 'ruled.me':
         return _parse_ruled_me_response(metadata, response)
-    else:
+    elif domain == 'ketoconnect.net':
         return _parse_ketoconnect_response(metadata, response)
+    else:
+        raise ValueError('Unexpected domain: %s' % domain)
+
+
+def _parse_domain(url):
+    domain_parts = urlparse.urlparse(url).netloc.split('.')
+    return '.'.join(domain_parts[-2:])
 
 
 def _parse_ruled_me_response(metadata, response):
