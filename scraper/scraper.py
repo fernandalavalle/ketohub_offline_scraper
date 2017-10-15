@@ -45,7 +45,7 @@ def main(args):
             raise
     logging.info('Parsed %d/%d successfully',
                  len(parsed), len(os.listdir(args.input_root)))
-    print json.dumps(parsed)
+    print json.dumps(parsed, sort_keys=True, indent=2)
 
 
 if __name__ == '__main__':
