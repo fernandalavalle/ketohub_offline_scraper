@@ -32,6 +32,27 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'ingredients': [],
             })
 
+    def test_scrapes_title_with_multiple_h1(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'referer':
+                'https://www.ketoconnect.net/main-dishes/',
+            }, """
+<html>
+<h1 class="entry-title">
+  <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
+</h1>
+<h1>Non-title text</h1>
+</html>"""), {
+                'title': 'Keto Butter Chicken',
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'category': 'entree',
+                'ingredients': [],
+            })
+
     def test_scrapes_title_and_removes_flavor_text(self):
         self.assertEqual(
             html_parse.parse({
