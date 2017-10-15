@@ -1,6 +1,13 @@
+import os
 import unittest
 
 from scraper import html_parse
+
+
+def _read_test_file(filename):
+    basepath = os.path.dirname(__file__)
+    filepath = os.path.join(basepath, 'testdata', filename)
+    return open(filepath).read()
 
 
 class ScrapeKetoConnectHtml(unittest.TestCase):
@@ -22,6 +29,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'url':
                 'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
                 'category': 'entree',
+                'ingredients': [],
             })
 
     def test_scrapes_title_and_removes_flavor_text(self):
@@ -41,6 +49,37 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'url':
                 'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
                 'category': 'entree',
+                'ingredients': [],
+            })
+
+    def test_scrapes_ingredients(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
+                'referer':
+                'https://www.ketoconnect.net/main-dishes/',
+            }, _read_test_file('low-carb-pizza-crust.html')), {
+                'title':
+                'Low Carb Pizza Crust',
+                'url':
+                'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
+                'category':
+                'entree',
+                'ingredients': [
+                    'Coconut flour',
+                    'psyilium husk powder',
+                    'active dry yeast',
+                    'Baking powder',
+                    'salt',
+                    'olive oil',
+                    'Water',
+                    'eggs',
+                    'minced garlic',
+                    'Red Pepper Flakes',
+                    'dried minced onion flakes',
+                    'Oregano',
+                ],
             })
 
 
