@@ -1,4 +1,5 @@
 import base
+import ingredients
 import titles
 
 
@@ -20,7 +21,25 @@ def parse_recipe(metadata, response):
     if not category:
         raise base.ParseError('Could not find category for %s -> %s' %
                               (metadata['url'], category_hierarchy))
-    return {'title': title, 'url': metadata['url'], 'category': category}
+    ingredients_list = _parse_ingredients(response)
+    return {
+        'title': title,
+        'url': metadata['url'],
+        'category': category,
+        'ingredients': ingredients_list
+    }
+
+
+def _parse_ingredients(response):
+    ingredients_raw = []
+    for ingredient_raw in response.xpath('//table//tr/td[1]//text()').extract():
+        ingredients_raw.append(ingredient_raw)
+    # First row is headers, last two rows are totals and per-serving macros.
+    ingredients_raw = ingredients_raw[1:-2]
+    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
+    # Remove empty ingredients.
+    ingredients_parsed = [r for r in ingredients_parsed if r]
+    return ingredients_parsed
 
 
 def _canonicalize_category(category):
