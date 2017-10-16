@@ -1,3 +1,4 @@
+import base
 import titles
 
 
@@ -8,11 +9,13 @@ def parse_recipe(metadata, response):
     category_raw = _category_from_url(metadata['referer'])
     category = _canonicalize_category(category_raw)
     ingredients_list = _parse_ingredients(response)
+    main_image = _find_main_image_url(response)
     return {
         'title': title,
         'url': metadata['url'],
         'category': category,
-        'ingredients': ingredients_list
+        'ingredients': ingredients_list,
+        'mainImage': main_image,
     }
 
 
@@ -37,3 +40,16 @@ def _canonicalize_category(category):
         'desserts': 'dessert',
         'beverages': 'beverage',
     }[category.lower()]
+
+
+def _find_main_image_url(response):
+    opengraph_url = base.find_opengraph_image(response)
+    print 'url=%s' % opengraph_url
+    if opengraph_url:
+        return opengraph_url
+
+    for image_url in response.xpath(
+            '//div[@id="tve_editor"]//img/@src').extract():
+        if image_url.endswith('.jpg'):
+            return image_url
+    return None
