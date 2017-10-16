@@ -12,6 +12,9 @@ def _read_test_file(filename):
 
 class ScrapeKetoConnectHtml(unittest.TestCase):
 
+    def setUp(self):
+        self.maxDiff = None
+
     def test_scrapes_title_with_no_flavor_text(self):
         self.assertEqual(
             html_parse.parse({
@@ -21,6 +24,9 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'https://www.ketoconnect.net/main-dishes/',
             }, """
 <html>
+<meta
+  property="og:image"
+  content="https://www.ketoconnect.net/recipe-image.jpg" />
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
 </h1>
@@ -30,6 +36,34 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
                 'category': 'entree',
                 'ingredients': [],
+                'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
+            })
+
+    def test_scrapes_non_opengraph_image(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'referer':
+                'https://www.ketoconnect.net/main-dishes/',
+            }, """
+<html>
+
+<div id="tve_editor">
+<span class="junk">
+<img class="tve_image" alt="" style="width: 400px;" src="https://www.ketoconnect.net/recipe-image.jpg" width="400" height="600" data-attachment-id="9282">
+</span>
+</div>
+<h1 class="entry-title">
+  <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
+</h1>
+</html>"""), {
+                'title': 'Keto Butter Chicken',
+                'url':
+                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
+                'category': 'entree',
+                'ingredients': [],
+                'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
             })
 
     def test_scrapes_title_with_multiple_h1(self):
@@ -51,6 +85,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
                 'category': 'entree',
                 'ingredients': [],
+                'mainImage': None,
             })
 
     def test_scrapes_title_and_removes_flavor_text(self):
@@ -71,6 +106,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
                 'category': 'entree',
                 'ingredients': [],
+                'mainImage': None,
             })
 
     def test_scrapes_ingredients(self):
@@ -101,10 +137,15 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                     'dried minced onion flakes',
                     'Oregano',
                 ],
+                'mainImage':
+                'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
             })
 
 
 class ScrapeRuledMeHtml(unittest.TestCase):
+
+    def setUp(self):
+        self.maxDiff = None
 
     def test_scrapes_title_and_simple_category(self):
         self.assertEqual(
@@ -112,6 +153,7 @@ class ScrapeRuledMeHtml(unittest.TestCase):
                 'url': 'https://www.ruled.me/keto-beef-wellington/'
             }, """
 <html>
+ <meta property="og:image" content="https://ruled.me/recipe-image.jpg" />
 <h1>Keto Beef Wellington</h1>
 <div class="postCategories">
 &gt; <a rel="nofollow" href="" title="Dinner">Dinner</a>
@@ -121,6 +163,7 @@ class ScrapeRuledMeHtml(unittest.TestCase):
                 'url': 'https://www.ruled.me/keto-beef-wellington/',
                 'category': 'entree',
                 'ingredients': [],
+                'mainImage': 'https://ruled.me/recipe-image.jpg',
             })
 
     def test_scrapes_title_and_hierarchical_category(self):
@@ -138,6 +181,7 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
                 'url': 'https://www.ruled.me/keto-sushi/',
                 'category': 'entree',
                 'ingredients': [],
+                'mainImage': None,
             })
 
     def test_scrapes_title_and_reverse_hierarchical_category(self):
@@ -156,6 +200,7 @@ Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-i
                 'url': 'https://www.ruled.me/cauliflower-mac-cheese/',
                 'category': 'side',
                 'ingredients': [],
+                'mainImage': None,
             })
 
     def test_scrapes_ingredients(self):
@@ -255,4 +300,6 @@ Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-i
                     'sugar-free dark chocolate', 'coconut oil',
                     'heavy whipping cream', 'lemon zest', 'shredded coconut'
                 ],
+                'mainImage':
+                None,
             })

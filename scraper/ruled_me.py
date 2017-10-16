@@ -22,11 +22,13 @@ def parse_recipe(metadata, response):
         raise base.ParseError('Could not find category for %s -> %s' %
                               (metadata['url'], category_hierarchy))
     ingredients_list = _parse_ingredients(response)
+    main_image = base.find_opengraph_image(response)
     return {
         'title': title,
         'url': metadata['url'],
         'category': category,
-        'ingredients': ingredients_list
+        'ingredients': ingredients_list,
+        'mainImage': main_image,
     }
 
 
