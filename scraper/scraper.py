@@ -26,11 +26,6 @@ def main(args):
     parsed = {}
     for recipe_key in os.listdir(args.input_root):
         logging.info('parsing %s', recipe_key)
-        if not os.path.exists(
-                os.path.join(args.input_root, recipe_key, 'main.jpg')):
-            logger.warning('skipping %s because main image is not available',
-                           recipe_key)
-            continue
         metadata_path = os.path.join(args.input_root, recipe_key,
                                      'metadata.json')
         with open(metadata_path) as metadata_file:
