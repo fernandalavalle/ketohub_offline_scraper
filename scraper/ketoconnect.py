@@ -44,7 +44,6 @@ def _canonicalize_category(category):
 
 def _find_main_image_url(response):
     opengraph_url = base.find_opengraph_image(response)
-    print 'url=%s' % opengraph_url
     if opengraph_url:
         return opengraph_url
 
