@@ -12,13 +12,17 @@ def parse(metadata, html):
     domain = _parse_domain(metadata['url'])
 
     if domain == 'ruled.me':
-        parse_recipe = ruled_me.parse_recipe
+        parser = ruled_me
     elif domain == 'ketoconnect.net':
-        parse_recipe = ketoconnect.parse_recipe
+        parser = ketoconnect
     else:
         raise ValueError('Unexpected domain: %s' % domain)
 
-    return parse_recipe(metadata, response)
+    parsed = parser.parse_recipe(metadata, response)
+    if domain == 'ketoconnect.net':
+        parsed['title'] = parser.parse_title(response, metadata)
+
+    return parsed
 
 
 def _parse_domain(url):

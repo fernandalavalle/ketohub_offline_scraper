@@ -15,30 +15,6 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-    def test_scrapes_title_with_no_flavor_text(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'referer':
-                'https://www.ketoconnect.net/main-dishes/',
-            }, """
-<html>
-<meta
-  property="og:image"
-  content="https://www.ketoconnect.net/recipe-image.jpg" />
-<h1 class="entry-title">
-  <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
-</h1>
-</html>"""), {
-                'title': 'Keto Butter Chicken',
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
-            })
-
     def test_scrapes_non_opengraph_image(self):
         self.assertEqual(
             html_parse.parse({
@@ -64,49 +40,6 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
-            })
-
-    def test_scrapes_title_with_multiple_h1(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'referer':
-                'https://www.ketoconnect.net/main-dishes/',
-            }, """
-<html>
-<h1 class="entry-title">
-  <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
-</h1>
-<h1>Non-title text</h1>
-</html>"""), {
-                'title': 'Keto Butter Chicken',
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': None,
-            })
-
-    def test_scrapes_title_and_removes_flavor_text(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
-                'referer':
-                'https://www.ketoconnect.net/main-dishes/',
-            }, """
-<html>
-<h1 class="entry-title">
-  <a href="https://www.ketoconnect.net/recipe/cauliflower-waffles/">Cauliflower Waffles | Bacon and Cheddar!</a>
-</h1>
-</html>"""), {
-                'title': 'Cauliflower Waffles',
-                'url':
-                'https://www.ketoconnect.net/recipe/cauliflower-waffles/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': None,
             })
 
     def test_scrapes_ingredients(self):
