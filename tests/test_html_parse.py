@@ -80,62 +80,6 @@ class ScrapeRuledMeHtml(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-    def test_scrapes_title_and_simple_category(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url': 'https://www.ruled.me/keto-beef-wellington/'
-            }, """
-<html>
- <meta property="og:image" content="https://ruled.me/recipe-image.jpg" />
-<h1>Keto Beef Wellington</h1>
-<div class="postCategories">
-&gt; <a rel="nofollow" href="" title="Dinner">Dinner</a>
-</div>
-</html>"""), {
-                'title': 'Keto Beef Wellington',
-                'url': 'https://www.ruled.me/keto-beef-wellington/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': 'https://ruled.me/recipe-image.jpg',
-            })
-
-    def test_scrapes_title_and_hierarchical_category(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url': 'https://www.ruled.me/keto-sushi/'
-            }, """
-<html>
-<h1>Keto Sushi</h1>
-<div class="postCategories">
-Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" title="Dinner">Dinner</a>
-</div>
-</html>"""), {
-                'title': 'Keto Sushi',
-                'url': 'https://www.ruled.me/keto-sushi/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': None,
-            })
-
-    def test_scrapes_title_and_reverse_hierarchical_category(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.ruled.me/cauliflower-mac-cheese/'
-            }, """
-<html>
-<h1>Cauliflower Mac & Cheese</h1>
-<div class="postCategories">
-Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-items/" title="Keto Recipes">Keto Recipes</a>
-</div>
-</html>"""), {
-                'title': 'Cauliflower Mac and Cheese',
-                'url': 'https://www.ruled.me/cauliflower-mac-cheese/',
-                'category': 'side',
-                'ingredients': [],
-                'mainImage': None,
-            })
-
     def test_scrapes_ingredients(self):
         self.assertEqual(
             html_parse.parse({
