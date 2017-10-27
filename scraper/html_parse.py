@@ -20,8 +20,7 @@ def parse(metadata, html):
 
     parsed = parser.parse_recipe(metadata, response)
     parsed['title'] = parser.parse_title(response, metadata)
-    if domain == 'ketoconnect.net':
-        parsed['category'] = parser.parse_category(response, metadata)
+    parsed['category'] = parser.parse_category(response, metadata)
 
     return parsed
 

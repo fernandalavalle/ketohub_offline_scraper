@@ -5,10 +5,25 @@ import titles
 
 
 def parse_recipe(metadata, response):
+    ingredients_list = _parse_ingredients(response)
+    main_image = opengraph.find_image(response)
+    return {
+        'url': metadata['url'],
+        'ingredients': ingredients_list,
+        'mainImage': main_image,
+    }
+
+
+def parse_title(response, _=None):
+    return titles.canonicalize(
+        response.xpath('//h1//text()').extract_first().strip())
+
+
+def parse_category(response, _=None):
+    category = None
     category_hierarchy = ''.join(
         response.xpath('//div[@class="postCategories"]//text()')
         .extract()).strip()
-    category = None
     for category_raw in category_hierarchy.split('>'):
         category_stripped = str(category_raw.strip())
         if category_stripped:
@@ -18,21 +33,10 @@ def parse_recipe(metadata, response):
                 continue
             break
     if not category:
-        raise errors.ParseError('Could not find category for %s -> %s' %
-                                (metadata['url'], category_hierarchy))
-    ingredients_list = _parse_ingredients(response)
-    main_image = opengraph.find_image(response)
-    return {
-        'url': metadata['url'],
-        'category': category,
-        'ingredients': ingredients_list,
-        'mainImage': main_image,
-    }
-
-
-def parse_title(response, _=None):
-    return titles.canonicalize(
-        response.xpath('//h1//text()').extract_first().strip())
+        raise errors.ParseError(
+            'Could not find category for %s -> %s' % response.url,
+            category_hierarchy)
+    return category
 
 
 def _parse_ingredients(response):
