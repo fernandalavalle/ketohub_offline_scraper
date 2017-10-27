@@ -37,3 +37,13 @@ class KetoConnectParseTitleTest(unittest.TestCase):
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/cauliflower-waffles/">Cauliflower Waffles | Bacon and Cheddar!</a>
 </h1>""")), 'Cauliflower Waffles')
+
+
+class KetoConnectParseCategoryTest(unittest.TestCase):
+
+    def test_scrapes_non_opengraph_image(self):
+        self.assertEqual(
+            ketoconnect.parse_category(
+                http.TextResponse(url='', body=''), {
+                    'referer': 'https://www.ketoconnect.net/main-dishes/',
+                }), 'entree')

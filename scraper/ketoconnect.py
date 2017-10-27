@@ -3,13 +3,10 @@ import titles
 
 
 def parse_recipe(metadata, response):
-    category_raw = _category_from_url(metadata['referer'])
-    category = _canonicalize_category(category_raw)
     ingredients_list = _parse_ingredients(response)
     main_image = _find_main_image_url(response)
     return {
         'url': metadata['url'],
-        'category': category,
         'ingredients': ingredients_list,
         'mainImage': main_image,
     }
@@ -21,6 +18,11 @@ def parse_title(response, _=None):
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
     print 'title_raw=%s' % title_raw
     return titles.canonicalize(title_raw.split('|')[0].strip())
+
+
+def parse_category(_, metadata):
+    category_raw = _category_from_url(metadata['referer'])
+    return _canonicalize_category(category_raw)
 
 
 def _category_from_url(url):
