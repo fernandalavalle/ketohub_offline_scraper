@@ -23,12 +23,18 @@ def parse_recipe(metadata, response):
                               (metadata['url'], category_hierarchy))
     ingredients_list = _parse_ingredients(response)
     main_image = base.find_opengraph_image(response)
+    published_time = base.find_opengraph_published_time(response)
+    if published_time:
+        published_time_formatted = published_time.isoformat() + 'Z'
+    else:
+        published_time_formatted = None
     return {
         'title': title,
         'url': metadata['url'],
         'category': category,
         'ingredients': ingredients_list,
         'mainImage': main_image,
+        'publishedTime': published_time_formatted,
     }
 
 

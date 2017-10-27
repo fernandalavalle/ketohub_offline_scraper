@@ -37,6 +37,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
+                'publishedTime': None,
             })
 
     def test_scrapes_non_opengraph_image(self):
@@ -64,6 +65,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
+                'publishedTime': None,
             })
 
     def test_scrapes_title_with_multiple_h1(self):
@@ -107,6 +109,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': None,
+                'publishedTime': None,
             })
 
     def test_scrapes_ingredients(self):
@@ -139,6 +142,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
                 ],
                 'mainImage':
                 'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
+                'publishedTime': None,
             })
 
 
@@ -154,6 +158,7 @@ class ScrapeRuledMeHtml(unittest.TestCase):
             }, """
 <html>
  <meta property="og:image" content="https://ruled.me/recipe-image.jpg" />
+ <meta property="article:published_time" content="2013-11-02T12:39:31-04:00" />
 <h1>Keto Beef Wellington</h1>
 <div class="postCategories">
 &gt; <a rel="nofollow" href="" title="Dinner">Dinner</a>
@@ -164,6 +169,7 @@ class ScrapeRuledMeHtml(unittest.TestCase):
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': 'https://ruled.me/recipe-image.jpg',
+                'publishedTime': '2013-11-02T16:39:31Z',
             })
 
     def test_scrapes_title_and_hierarchical_category(self):
@@ -182,6 +188,7 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
                 'category': 'entree',
                 'ingredients': [],
                 'mainImage': None,
+                'publishedTime': None,
             })
 
     def test_scrapes_title_and_reverse_hierarchical_category(self):
@@ -201,6 +208,7 @@ Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-i
                 'category': 'side',
                 'ingredients': [],
                 'mainImage': None,
+                'publishedTime': None,
             })
 
     def test_scrapes_ingredients(self):
@@ -302,4 +310,5 @@ Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-i
                 ],
                 'mainImage':
                 None,
+                'publishedTime': None,
             })
