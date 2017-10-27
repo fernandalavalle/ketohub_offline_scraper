@@ -1,3 +1,8 @@
+import json
+
+from dateutil import parser
+import pytz
+
 from common import opengraph
 import titles
 
@@ -31,6 +36,14 @@ def parse_ingredients(response, _=None):
             '//span[@class="wpurp-recipe-ingredient-name"]/text()').extract():
         ingredients_raw.append(ingredient_raw)
     return ingredients_raw
+
+
+def parse_published_time(response, _=None):
+    recipe_schema_raw = response.xpath(
+        '//script[@type="application/ld+json"]/text()').extract()[-1]
+    recipe_schema = json.loads(recipe_schema_raw)
+    return parser.parse(recipe_schema['datePublished']).replace(
+        tzinfo=pytz.UTC).isoformat()
 
 
 def _category_from_url(url):
