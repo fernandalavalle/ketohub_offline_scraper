@@ -45,6 +45,10 @@ def parse_ingredients(response, _=None):
     return ingredients_parsed
 
 
+def parse_published_time(response, _=None):
+    return opengraph.find_published_time(response).isoformat()
+
+
 def _canonicalize_category(category):
     return {
         'breakfast': 'breakfast',

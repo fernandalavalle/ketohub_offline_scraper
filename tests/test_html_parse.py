@@ -45,6 +45,8 @@ class HtmlParseTest(unittest.TestCase):
                 ],
                 'mainImage':
                 'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
+                'publishedTime':
+                '2017-10-08T09:52:09+00:00',
             })
 
     def test_scrapes_ruled_me_recipe(self):
@@ -77,5 +79,7 @@ class HtmlParseTest(unittest.TestCase):
                     u'avocado oil',
                 ],
                 'mainImage':
-                'https://cdn4.ruled.me/wp-content/uploads/2017/09/fried-goat-cheese-salad-featured.jpg'
+                'https://cdn4.ruled.me/wp-content/uploads/2017/09/fried-goat-cheese-salad-featured.jpg',
+                'publishedTime':
+                '2017-10-03T11:00:54+00:00',
             })

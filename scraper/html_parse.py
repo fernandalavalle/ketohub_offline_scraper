@@ -24,6 +24,7 @@ def parse(metadata, html):
         'category': parser.parse_category(response, metadata),
         'mainImage': parser.parse_image(response, metadata),
         'ingredients': parser.parse_ingredients(response, metadata),
+        'publishedTime': parser.parse_published_time(response, metadata),
     }
 
 
