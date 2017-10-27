@@ -13,14 +13,9 @@ class KetoConnectParseTitleTest(unittest.TestCase):
                 http.TextResponse(
                     url='',
                     body="""
-<html>
-<meta
-  property="og:image"
-  content="https://www.ketoconnect.net/recipe-image.jpg" />
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
-</h1>
-</html>""")), 'Keto Butter Chicken')
+</h1>""")), 'Keto Butter Chicken')
 
     def test_scrapes_title_with_multiple_h1(self):
         self.assertEqual(
@@ -39,8 +34,6 @@ class KetoConnectParseTitleTest(unittest.TestCase):
                 http.TextResponse(
                     url='',
                     body="""
-<html>
 <h1 class="entry-title">
   <a href="https://www.ketoconnect.net/recipe/cauliflower-waffles/">Cauliflower Waffles | Bacon and Cheddar!</a>
-</h1>
-</html>""")), 'Cauliflower Waffles')
+</h1>""")), 'Cauliflower Waffles')
