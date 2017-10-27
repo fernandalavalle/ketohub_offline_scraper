@@ -1,4 +1,5 @@
-import base
+from common import errors
+from common import opengraph
 import ingredients
 import titles
 
@@ -19,10 +20,10 @@ def parse_recipe(metadata, response):
                 continue
             break
     if not category:
-        raise base.ParseError('Could not find category for %s -> %s' %
-                              (metadata['url'], category_hierarchy))
+        raise errors.ParseError('Could not find category for %s -> %s' %
+                                (metadata['url'], category_hierarchy))
     ingredients_list = _parse_ingredients(response)
-    main_image = base.find_opengraph_image(response)
+    main_image = opengraph.find_image(response)
     return {
         'title': title,
         'url': metadata['url'],
