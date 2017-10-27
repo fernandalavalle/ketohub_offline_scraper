@@ -6,11 +6,9 @@ import titles
 
 def parse_recipe(metadata, response):
     ingredients_list = _parse_ingredients(response)
-    main_image = opengraph.find_image(response)
     return {
         'url': metadata['url'],
         'ingredients': ingredients_list,
-        'mainImage': main_image,
     }
 
 
@@ -37,6 +35,10 @@ def parse_category(response, _=None):
             'Could not find category for %s -> %s' % response.url,
             category_hierarchy)
     return category
+
+
+def parse_image(response, _=None):
+    return opengraph.find_image(response)
 
 
 def _parse_ingredients(response):

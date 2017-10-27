@@ -50,3 +50,15 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
 Side Items &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/side-items/" title="Keto Recipes">Keto Recipes</a>
 </div>
 </html>""")), 'side')
+
+
+class RuledMeParseImageTest(unittest.TestCase):
+
+    def test_scrapes_image(self):
+        self.assertEqual(
+            ruled_me.parse_image(
+                http.TextResponse(
+                    url='',
+                    body="""
+ <meta property="og:image" content="https://ruled.me/recipe-image.jpg" />""")),
+            'https://ruled.me/recipe-image.jpg')
