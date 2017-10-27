@@ -13,10 +13,8 @@ def parse_recipe(metadata, response):
 
 
 def parse_title(response, _=None):
-    print 'response=%s' % response
     title_raw = ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
-    print 'title_raw=%s' % title_raw
     return titles.canonicalize(title_raw.split('|')[0].strip())
 
 
