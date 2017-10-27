@@ -4,14 +4,6 @@ import ingredients
 import titles
 
 
-def parse_recipe(metadata, response):
-    ingredients_list = _parse_ingredients(response)
-    return {
-        'url': metadata['url'],
-        'ingredients': ingredients_list,
-    }
-
-
 def parse_title(response, _=None):
     return titles.canonicalize(
         response.xpath('//h1//text()').extract_first().strip())
@@ -41,7 +33,7 @@ def parse_image(response, _=None):
     return opengraph.find_image(response)
 
 
-def _parse_ingredients(response):
+def parse_ingredients(response, _=None):
     ingredients_raw = []
     for ingredient_raw in response.xpath('//table//tr/td[1]//text()').extract():
         ingredients_raw.append(ingredient_raw)

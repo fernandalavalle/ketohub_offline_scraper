@@ -18,17 +18,13 @@ def parse(metadata, html):
     else:
         raise ValueError('Unexpected domain: %s' % domain)
 
-    if domain == 'ketoconnect.net':
-        parsed = {}
-        parsed['url'] = metadata['url']
-        parsed['ingredients'] = parser.parse_ingredients(response, metadata)
-    else:
-        parsed = parser.parse_recipe(metadata, response)
-    parsed['title'] = parser.parse_title(response, metadata)
-    parsed['category'] = parser.parse_category(response, metadata)
-    parsed['mainImage'] = parser.parse_image(response, metadata)
-
-    return parsed
+    return {
+        'url': metadata['url'],
+        'title': parser.parse_title(response, metadata),
+        'category': parser.parse_category(response, metadata),
+        'mainImage': parser.parse_image(response, metadata),
+        'ingredients': parser.parse_ingredients(response, metadata),
+    }
 
 
 def _parse_domain(url):
