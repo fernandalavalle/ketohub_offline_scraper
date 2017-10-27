@@ -5,8 +5,6 @@ import titles
 
 
 def parse_recipe(metadata, response):
-    title = titles.canonicalize(
-        response.xpath('//h1//text()').extract_first().strip())
     category_hierarchy = ''.join(
         response.xpath('//div[@class="postCategories"]//text()')
         .extract()).strip()
@@ -25,12 +23,16 @@ def parse_recipe(metadata, response):
     ingredients_list = _parse_ingredients(response)
     main_image = opengraph.find_image(response)
     return {
-        'title': title,
         'url': metadata['url'],
         'category': category,
         'ingredients': ingredients_list,
         'mainImage': main_image,
     }
+
+
+def parse_title(response, _=None):
+    return titles.canonicalize(
+        response.xpath('//h1//text()').extract_first().strip())
 
 
 def _parse_ingredients(response):
