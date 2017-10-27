@@ -1,4 +1,4 @@
-import base
+from common import opengraph
 import titles
 
 
@@ -43,7 +43,7 @@ def _canonicalize_category(category):
 
 
 def _find_main_image_url(response):
-    opengraph_url = base.find_opengraph_image(response)
+    opengraph_url = opengraph.find_image(response)
     if opengraph_url:
         return opengraph_url
 
