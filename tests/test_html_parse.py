@@ -15,33 +15,6 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-    def test_scrapes_non_opengraph_image(self):
-        self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'referer':
-                'https://www.ketoconnect.net/main-dishes/',
-            }, """
-<html>
-
-<div id="tve_editor">
-<span class="junk">
-<img class="tve_image" alt="" style="width: 400px;" src="https://www.ketoconnect.net/recipe-image.jpg" width="400" height="600" data-attachment-id="9282">
-</span>
-</div>
-<h1 class="entry-title">
-  <a href="https://www.ketoconnect.net/recipe/keto-butter-chicken/">Keto Butter Chicken</a>
-</h1>
-</html>"""), {
-                'title': 'Keto Butter Chicken',
-                'url':
-                'https://www.ketoconnect.net/recipe/keto-butter-chicken/',
-                'category': 'entree',
-                'ingredients': [],
-                'mainImage': 'https://www.ketoconnect.net/recipe-image.jpg',
-            })
-
     def test_scrapes_ingredients(self):
         self.assertEqual(
             html_parse.parse({
