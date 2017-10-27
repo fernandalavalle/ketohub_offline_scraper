@@ -2,14 +2,6 @@ from common import opengraph
 import titles
 
 
-def parse_recipe(metadata, response):
-    ingredients_list = _parse_ingredients(response)
-    return {
-        'url': metadata['url'],
-        'ingredients': ingredients_list,
-    }
-
-
 def parse_title(response, _=None):
     title_raw = ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
@@ -33,16 +25,16 @@ def parse_image(response, _=None):
     return None
 
 
-def _category_from_url(url):
-    return [str(x) for x in url.split('/') if x][-1]
-
-
-def _parse_ingredients(response):
+def parse_ingredients(response, _=None):
     ingredients_raw = []
     for ingredient_raw in response.xpath(
             '//span[@class="wpurp-recipe-ingredient-name"]/text()').extract():
         ingredients_raw.append(ingredient_raw)
     return ingredients_raw
+
+
+def _category_from_url(url):
+    return [str(x) for x in url.split('/') if x][-1]
 
 
 def _canonicalize_category(category):

@@ -15,7 +15,7 @@ class ScrapeKetoConnectHtml(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-    def test_scrapes_ingredients(self):
+    def test_scrapes_recipe(self):
         self.assertEqual(
             html_parse.parse({
                 'url':
