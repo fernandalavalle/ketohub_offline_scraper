@@ -47,5 +47,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         prog='KetoHub Offline HTML Scraper',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-i', '--input_root')
+    parser.add_argument('-i', '--input_root', required=True)
     main(parser.parse_args())
