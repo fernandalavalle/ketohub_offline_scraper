@@ -3,6 +3,7 @@ import urlparse
 from scrapy import http
 
 import ketoconnect
+import ketogasm
 import ruled_me
 
 
@@ -11,12 +12,16 @@ def parse(metadata, html):
     response = http.TextResponse(url=metadata['url'], body=html)
     domain = _parse_domain(metadata['url'])
 
-    if domain == 'ruled.me':
-        parser = ruled_me
-    elif domain == 'ketoconnect.net':
-        parser = ketoconnect
-    else:
+    parser_map = {
+        'ruled.me': ruled_me,
+        'ketoconnect.net': ketoconnect,
+        'ketogasm.com': ketogasm,
+    }
+
+    if domain not in parser_map:
         raise ValueError('Unexpected domain: %s' % domain)
+
+    parser = parser_map[domain]
 
     return {
         'url': metadata['url'],

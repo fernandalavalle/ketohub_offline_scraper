@@ -5,6 +5,7 @@ import json
 import logging
 import os
 
+from common import errors
 import html_parse
 
 logger = logging.getLogger(__name__)
@@ -35,6 +36,8 @@ def main(args):
         raw_html = open(html_path).read()
         try:
             parsed[recipe_key] = html_parse.parse(metadata, raw_html)
+        except errors.NoRecipeFoundError as ex:
+            logging.warn('No recipe found %s: %s', recipe_key, ex)
         except Exception as ex:
             logging.error('Failed to parse %s: %s', recipe_key, ex)
             raise

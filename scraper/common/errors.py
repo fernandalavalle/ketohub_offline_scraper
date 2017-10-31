@@ -4,3 +4,7 @@ class Error(Exception):
 
 class ParseError(Error):
     pass
+
+
+class NoRecipeFoundError(Error):
+    pass
