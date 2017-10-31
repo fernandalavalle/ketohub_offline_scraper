@@ -1,9 +1,8 @@
-import json
-
 from dateutil import parser
 import pytz
 
 from common import opengraph
+from common import recipe_schema
 import titles
 
 
@@ -39,9 +38,7 @@ def parse_ingredients(response, _=None):
 
 
 def parse_published_time(response, _=None):
-    recipe_schema_raw = response.xpath(
-        '//script[@type="application/ld+json"]/text()').extract()[-1]
-    recipe_schema = json.loads(recipe_schema_raw)
+    schema = recipe_schema.read(response)
     return parser.parse(recipe_schema['datePublished']).replace(
         tzinfo=pytz.UTC).isoformat()
 
