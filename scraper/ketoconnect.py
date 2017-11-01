@@ -39,7 +39,7 @@ def parse_ingredients(response, _=None):
 
 def parse_published_time(response, _=None):
     schema = recipe_schema.read(response)
-    return parser.parse(recipe_schema['datePublished']).replace(
+    return parser.parse(schema['datePublished']).replace(
         tzinfo=pytz.UTC).isoformat()
 
 

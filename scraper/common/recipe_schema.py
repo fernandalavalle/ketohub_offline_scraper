@@ -10,6 +10,4 @@ def read(response):
         if '@type' in json_dict and json_dict['@type'] == 'Recipe':
             return json_dict
 
-    raise errors.NoRecipeFound('Response does not contain a Recipe schema')
-
-
+    raise errors.NoRecipeFoundError('Response does not contain a Recipe schema')
