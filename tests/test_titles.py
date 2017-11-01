@@ -26,3 +26,9 @@ class TitlesCanonicalizeTest(unittest.TestCase):
         self.assertEqual(
             titles.canonicalize('Beef in a Slow-Cooker'),
             'Beef in a Slow Cooker')
+
+    def test_handles_unicode_characters(self):
+        self.assertEqual(
+            titles.canonicalize(
+                u'Pumpkin Seed Bark Recipe \u2013 Dark Chocolate'),
+            u'Pumpkin Seed Bark Recipe \u2013 Dark Chocolate')
