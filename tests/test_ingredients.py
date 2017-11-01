@@ -19,6 +19,7 @@ class ParseIngredientTest(unittest.TestCase):
              'medium jalapeno peppers'),
             (u'\u201cBest Low Carb\u201d tortillas',
              '"Best Low Carb" tortillas'),
+            (u'8 oz Cheddar Shredded \u2013 Mild', 'Cheddar Shredded - Mild'),
             ('10.5 ounces (300 g) sugar-free dark chocolate',
              'sugar-free dark chocolate'),
             ('Pinch of cayenne pepper', 'cayenne pepper'),
@@ -69,7 +70,9 @@ class ParseIngredientTest(unittest.TestCase):
             ('1 cup Coconut Milk (carton)', 'Coconut Milk'),
             ('3 zucchini squash (1 lb total)', 'zucchini squash'),
             ('1lb ground hot italian sausage', 'ground hot italian sausage'),
-            ('1 1/2 lbs. Chicken Thighs, skin on', 'Chicken Thighs, skin on'),)
+            ('1 1/2 lbs. Chicken Thighs, skin on', 'Chicken Thighs, skin on'),
+            ('1 container Wild Oats Organic Tomato Basil Pasta Sauce',
+             'Wild Oats Organic Tomato Basil Pasta Sauce'),)
         for raw, expected in cases:
             actual = ingredients.parse(raw)
             self.assertEqual(actual, expected, '[%s] != [%s] (original=[%s])' %

@@ -134,3 +134,31 @@ class HtmlParseTest(unittest.TestCase):
                              _read_test_file(
                                  'ketogasm-com_how-to-make-loaded-fauxtato-skins-video.html'
                              ))
+
+    def test_scrapes_keto_size_me_recipe(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://ketosizeme.com/keto-baked-spaghetti/',
+                'referer':
+                'https://ketosizeme.com/ketogenic-diet-recipes-index/',
+            }, _read_test_file('ketosizeme-com_keto-baked-spaghetti.html')), {
+                'title':
+                u'Keto Baked Spaghetti',
+                'url':
+                'https://ketosizeme.com/keto-baked-spaghetti/',
+                'category':
+                'entree',
+                'ingredients': [
+                    u'Ground Beef', u'Spaghetti Squash',
+                    u'Wild Oats Organic Tomato Basil Pasta Sauce',
+                    u'Frigo Shredded Parmesan Cheese',
+                    u'Low Moisture Part-skim Mozzarella Cheese',
+                    u'Wild Oats Organic Chili powder', u'Oregano', u'Garlic',
+                    u'Large Egg'
+                ],
+                'mainImage':
+                u'https://ketosizeme.com/wp-content/uploads/2015/05/Low-Carb-Keto-Baked-Spaghetti-.jpg',
+                'publishedTime':
+                '2015-10-20T03:09:44+00:00',
+            })

@@ -15,6 +15,8 @@ def parse(ingredient_raw):
     canonicalized = re.sub(u'\u2019', '\'', canonicalized)
     # Canonicalize quotes.
     canonicalized = re.sub(u'[\u201c-\u201d]', '"', canonicalized)
+    # Canonicalize dashes.
+    canonicalized = re.sub(u'[\u2010-\u2015]', '-', canonicalized)
     # Canonicalize spaces.
     canonicalized = re.sub(u'\u00a0', ' ', canonicalized)
 
@@ -47,7 +49,7 @@ def parse(ingredient_raw):
         flags=re.IGNORECASE)
     # Remove other units of measure
     canonicalized = re.sub(
-        r'\b((can)|(bar)|(clove)|(drop))s?\b',
+        r'\b((can)|(container)|(bar)|(clove)|(drop))s?\b',
         '',
         canonicalized,
         flags=re.IGNORECASE)
