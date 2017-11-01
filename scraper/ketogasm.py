@@ -1,7 +1,11 @@
+import logging
+
 from common import opengraph
 from common import recipe_schema
 import ingredients
 import titles
+
+logger = logging.getLogger(__name__)
 
 
 def parse_title(response, _=None):
@@ -13,7 +17,13 @@ def parse_title(response, _=None):
 def parse_category(response, _=None):
     schema = recipe_schema.read(response)
     category_canonical = None
-    for category in schema['recipeCategory']:
+    try:
+        categories = schema['recipeCategory']
+    except KeyError:
+        logger.warning('No category found')
+        return None
+
+    for category in categories:
         category_canonical = _canonicalize_category(category)
         if category_canonical:
             break
