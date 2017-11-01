@@ -1,7 +1,5 @@
-import json
-
-from common import errors
 from common import opengraph
+from common import recipe_schema
 import ingredients
 import titles
 
@@ -13,15 +11,12 @@ def parse_title(response, _=None):
 
 
 def parse_category(response, _=None):
-    recipe_schema = _read_recipe_schema(response)
+    schema = recipe_schema.read(response)
     category_canonical = None
-    try:
-        for category in recipe_schema['recipeCategory']:
-            category_canonical = _canonicalize_category(category)
-            if category_canonical:
-                break
-    except KeyError:
-        raise errors.NoRecipeFoundError('Could not find recipe category')
+    for category in schema['recipeCategory']:
+        category_canonical = _canonicalize_category(category)
+        if category_canonical:
+            break
     return category_canonical
 
 
@@ -34,11 +29,8 @@ def parse_image(response, _=None):
 
 
 def parse_ingredients(response, _=None):
-    recipe_schema = _read_recipe_schema(response)
-    try:
-        ingredients_raw = recipe_schema['recipeIngredient']
-    except KeyError:
-        raise errors.RecipeNotFoundError('Could not find recipe ingredients')
+    schema = recipe_schema.read(response)
+    ingredients_raw = schema['recipeIngredient']
     ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
     # Remove empty ingredients.
     ingredients_parsed = [r for r in ingredients_parsed if r]
@@ -47,12 +39,6 @@ def parse_ingredients(response, _=None):
 
 def parse_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()
-
-
-def _read_recipe_schema(response):
-    recipe_schema_raw = response.xpath(
-        '//script[@type="application/ld+json"]/text()').extract()[-1]
-    return json.loads(recipe_schema_raw)
 
 
 def _canonicalize_category(category):
