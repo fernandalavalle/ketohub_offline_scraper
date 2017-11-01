@@ -21,6 +21,9 @@ class TitlesCanonicalizeTest(unittest.TestCase):
             titles.canonicalize('Sugar Free Cookies'), 'Sugar-Free Cookies')
         self.assertEqual(
             titles.canonicalize('Chocolate & Hearts'), 'Chocolate and Hearts')
+        self.assertEqual(
+            titles.canonicalize('Low Carb Moscow Mule Recipe'),
+            'Low Carb Moscow Mule')
         # Don't replace ampersand unless it has surrounding spaces
         self.assertEqual(titles.canonicalize('Keto PB&J'), 'Keto PB&J')
         self.assertEqual(
@@ -29,6 +32,5 @@ class TitlesCanonicalizeTest(unittest.TestCase):
 
     def test_handles_unicode_characters(self):
         self.assertEqual(
-            titles.canonicalize(
-                u'Pumpkin Seed Bark Recipe \u2013 Dark Chocolate'),
-            u'Pumpkin Seed Bark Recipe \u2013 Dark Chocolate')
+            titles.canonicalize(u'Pumpkin Seed Bark \u2013 Dark Chocolate'),
+            u'Pumpkin Seed Bark \u2013 Dark Chocolate')

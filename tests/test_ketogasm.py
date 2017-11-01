@@ -13,8 +13,8 @@ class KetogasmParseTitleTest(unittest.TestCase):
                 http.TextResponse(
                     url='',
                     body="""
-<h1 class="entry-title">Low Carb Moscow Mule Recipe &#8211; [Keto, Alcohol, Sugar Free]</h1>"""
-                )), 'Low Carb Moscow Mule Recipe')
+<h1 class="entry-title">Low Carb Moscow Mule &#8211; [Keto, Alcohol, Sugar Free]</h1>"""
+                )), 'Low Carb Moscow Mule')
 
 
 class KetogasmParseCategoryTest(unittest.TestCase):

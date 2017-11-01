@@ -1,8 +1,13 @@
+import re
+
+
 def canonicalize(title):
     canonicalized = title
     canonicalized = _remove_prefix(canonicalized)
+    canonicalized = _remove_junk_words(canonicalized)
     canonicalized = _normalize_conventions(canonicalized)
-    return canonicalized
+    canonicalized = _collapse_whitespace(canonicalized)
+    return canonicalized.strip()
 
 
 def _remove_prefix(title):
@@ -11,6 +16,10 @@ def _remove_prefix(title):
     for prefix in prefixes:
         stripped = stripped.replace(prefix, '').strip()
     return stripped
+
+
+def _remove_junk_words(title):
+    return title.replace('Recipe', '')
 
 
 def _normalize_conventions(title):
@@ -22,3 +31,7 @@ def _normalize_conventions(title):
         normalized = normalized.replace(old, new)
 
     return normalized
+
+
+def _collapse_whitespace(title):
+    return re.sub(r'\s+', ' ', title)
