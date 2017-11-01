@@ -2,6 +2,7 @@ import urlparse
 
 from scrapy import http
 
+import keto_size_me
 import ketoconnect
 import ketogasm
 import ruled_me
@@ -13,9 +14,10 @@ def parse(metadata, html):
     domain = _parse_domain(metadata['url'])
 
     parser_map = {
-        'ruled.me': ruled_me,
+        'ketosizeme.com': keto_size_me,
         'ketoconnect.net': ketoconnect,
         'ketogasm.com': ketogasm,
+        'ruled.me': ruled_me,
     }
 
     if domain not in parser_map:

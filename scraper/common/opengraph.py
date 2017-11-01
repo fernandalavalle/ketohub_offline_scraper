@@ -14,3 +14,9 @@ def find_published_time(response):
     if not published_time:
         return None
     return parser.parse(published_time).astimezone(pytz.utc)
+
+
+def find_section(response):
+    return response.xpath(
+        '/html/head/meta[@property="article:section"]/@content').extract_first(
+        )
