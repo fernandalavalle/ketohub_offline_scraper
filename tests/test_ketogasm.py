@@ -52,6 +52,14 @@ class KetogasmParseTitleTest(unittest.TestCase):
 <h1 class="entry-title">Pumpkin Seed Bark &#x2013; Dark Chocolate and Sea Salt</h1>"""
                 )), u'Pumpkin Seed Bark \u2013 Dark Chocolate and Sea Salt')
 
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Keto Flatbread Recipe &#x2013; Low Carb, Gluten Free</h1>"""
+                )), u'Keto Flatbread')
+
 
 class KetogasmParseCategoryTest(unittest.TestCase):
 

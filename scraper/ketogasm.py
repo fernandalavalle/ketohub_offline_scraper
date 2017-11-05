@@ -62,8 +62,10 @@ def _strip_title_tags(title_raw):
     if len(parts) == 1:
         return title_stripped
     tag_part = parts[-1].strip()
-    if re.sub((r'\s|,|(and)|(Low Carb)|(Gluten-Free)|(Keto)|(Dairy Free)'
-               r'|(Sugar-Free)'), '', tag_part) == '':
+    tags_stripped = re.sub(
+        (r'\s|,|(and)|(Low Carb)|(Gluten(-|\s)Free)|(Keto)|(Dairy Free)'
+         r'|(Sugar-Free)'), '', tag_part)
+    if not tags_stripped:
         return parts[0]
     return title_stripped
 
