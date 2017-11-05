@@ -16,6 +16,42 @@ class KetogasmParseTitleTest(unittest.TestCase):
 <h1 class="entry-title">Low Carb Moscow Mule &#8211; [Keto, Alcohol, Sugar Free]</h1>"""
                 )), 'Low Carb Moscow Mule')
 
+    def test_strips_tags_after_pipe(self):
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Spanish Cauliflower Rice | Low Carb</h1>""")),
+            'Spanish Cauliflower Rice')
+
+    def test_strips_tags_after_colon(self):
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Vodka Mojito: Low Carb and Sugar-Free</h1>""")),
+            'Vodka Mojito')
+
+    def test_strips_tags_after_dash(self):
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Spicy Chicken Sausage &#x2013; Low Carb, Gluten-Free</h1>"""
+                )), u'Spicy Chicken Sausage')
+
+    def test_keeps_non_tag_text_after_dash(self):
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Pumpkin Seed Bark &#x2013; Dark Chocolate and Sea Salt</h1>"""
+                )), u'Pumpkin Seed Bark \u2013 Dark Chocolate and Sea Salt')
+
 
 class KetogasmParseCategoryTest(unittest.TestCase):
 
