@@ -22,6 +22,8 @@ def parse(ingredient_raw):
 
     # Replace n-tilde character with normal n.
     canonicalized = re.sub(u'\u00f1', 'n', canonicalized)
+    # Replace accented e with simple e.
+    canonicalized = re.sub(u'[\u00e8-\u00eb]', 'e', canonicalized)
 
     # Remove text in parentheses.
     canonicalized = re.sub('\(.*\)', '', canonicalized)
@@ -29,7 +31,9 @@ def parse(ingredient_raw):
     canonicalized = re.sub(
         '^optional:\s*', '', canonicalized, flags=re.IGNORECASE)
 
+    # Remove number ranges.
     canonicalized = re.sub(r'~?\d+-\d+', '', canonicalized)
+    # Remove number of units.
     canonicalized = re.sub(r'~?((\d+/\d+)|(\d+(\.\d+)?))( ?(g|(lbs?\.?)))?', '',
                            canonicalized)
     # Replace vulgar fraction characters
@@ -49,7 +53,7 @@ def parse(ingredient_raw):
         flags=re.IGNORECASE)
     # Remove other units of measure
     canonicalized = re.sub(
-        r'\b((can)|(container)|(bar)|(clove)|(drop))s?\b',
+        r'\b((can)|(container)|(bar)|(clove)|(drop)|(stalk))s?\b',
         '',
         canonicalized,
         flags=re.IGNORECASE)
@@ -60,20 +64,23 @@ def parse(ingredient_raw):
         r'((slice)|(cube))s?\b', '', canonicalized, flags=re.IGNORECASE)
     canonicalized = re.sub(r',? ?peeled', '', canonicalized)
     canonicalized = re.sub(r',? ?seeded( and grated)?', '', canonicalized)
+    canonicalized = re.sub(r'(chopped and )?separated in', '', canonicalized)
     canonicalized = re.sub(
         (r',? ?((if needed)|(to garnish)|(for greasing the pan)|'
-         r'(room temperature)|(to taste))'),
+         r'(room temperature)|(to taste)|(if desired))'),
         '',
         canonicalized,
         flags=re.IGNORECASE)
-    #canonicalized = re.sub(r'\( ?((total)|(whole))\)', '', canonicalized)
-    # Remove asterisks.
-    canonicalized = re.sub(r'\*$', '', canonicalized)
+
     # Remove empty parentheses.
     canonicalized = re.sub(r'\([\s\-]*\)', '', canonicalized)
     # Hack to remove all the stray leading characters we missed earlier.
     canonicalized = re.sub(r'^\s*[\-+,%]', '', canonicalized)
     canonicalized = re.sub(r'^\s*of', '', canonicalized)
+    # Hack to remove all the stray trailing characters we missed earlier.
+    canonicalized = re.sub(r'\s*[\-,]\s*$', '', canonicalized)
+    # Remove asterisks.
+    canonicalized = re.sub(r'\*\s*$', '', canonicalized)
     # Collapse repeated whitespaces to single spaces.
     canonicalized = re.sub(r'\s+', ' ', canonicalized)
 

@@ -162,3 +162,72 @@ class HtmlParseTest(unittest.TestCase):
                 'publishedTime':
                 '2015-10-20T03:09:44+00:00',
             })
+
+    def test_scrapes_queen_bs_recipe(self):
+        self.assertEqual(
+            html_parse.
+            parse({
+                'url':
+                'http://queenbsincredibleedibles.com/2017/09/19/dill-pickle-dip/',
+                'referer':
+                'http://queenbsincredibleedibles.com/category/keto/page/2/',
+            },
+                  _read_test_file(
+                      'queenbsincredibleedibles-com_2017_09_19_dill-pickle-dip.html'
+                  )),
+            {
+                'title':
+                u'Dill Pickle Dip',
+                'url':
+                'http://queenbsincredibleedibles.com/2017/09/19/dill-pickle-dip/',
+                'category':
+                None,
+                'ingredients': [
+                    u'softened cream cheese',
+                    u'dill pickle juice',
+                    u'finely chopped pickle',
+                    u'shredded Colby jack cheese',
+                    u'crisped bacon',
+                    u'thinly sliced scallions, plus more for garnish',
+                ],
+                'mainImage':
+                u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/09/img_6266.jpg',
+                'publishedTime':
+                '2017-09-19T09:00:46+00:00',
+            })
+
+    def test_scrapes_queen_bs_recipe_with_link_in_ingredients(self):
+        self.assertEqual(
+            html_parse.
+            parse({
+                'url':
+                'http://queenbsincredibleedibles.com/2017/11/03/best-low-carb-gluten-free-stuffing-ever/',
+                'referer':
+                'http://queenbsincredibleedibles.com/category/keto/',
+            },
+                  _read_test_file(
+                      'queenbsincredibleedibles-com_2017_11_03_best-low-carb-gluten-free-stuffing-ever.html'
+                  )),
+            {
+                'title':
+                u'The Best Low Carb Gluten-Free Stuffing Ever!',
+                'url':
+                'http://queenbsincredibleedibles.com/2017/11/03/best-low-carb-gluten-free-stuffing-ever/',
+                'category':
+                None,
+                'ingredients': [
+                    u'bread',
+                    u'chicken stock or turkey stock',
+                    u'fresh rosemary',
+                    u'poultry seasoning',
+                    u'garlic powder',
+                    u'medium onion',
+                    u'celery',
+                    u'butter or olive oil',
+                    u'Salt and pepper',
+                ],
+                'mainImage':
+                u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/11/img_7054.jpg',
+                'publishedTime':
+                '2017-11-03T09:00:53+00:00',
+            })
