@@ -47,7 +47,7 @@ def parse(ingredient_raw):
         canonicalized,
         flags=re.IGNORECASE)
     canonicalized = re.sub(
-        r'((oz)|(lb)|(tbsp)|(tsp))(\.|\b)',
+        r'((fl\.? oz)|(oz)|(lb)|(tbsp)|(tsp)|(pint))(\.|\b)',
         '',
         canonicalized,
         flags=re.IGNORECASE)
@@ -75,7 +75,7 @@ def parse(ingredient_raw):
     # Remove empty parentheses.
     canonicalized = re.sub(r'\([\s\-]*\)', '', canonicalized)
     # Hack to remove all the stray leading characters we missed earlier.
-    canonicalized = re.sub(r'^\s*[\-+,%]', '', canonicalized)
+    canonicalized = re.sub(r'^\s*([\-/+,%]\s*)+', '', canonicalized)
     canonicalized = re.sub(r'^\s*of', '', canonicalized)
     # Hack to remove all the stray trailing characters we missed earlier.
     canonicalized = re.sub(r'\s*[\-,]\s*$', '', canonicalized)
@@ -83,6 +83,8 @@ def parse(ingredient_raw):
     canonicalized = re.sub(r'\*\s*$', '', canonicalized)
     # Collapse repeated whitespaces to single spaces.
     canonicalized = re.sub(r'\s+', ' ', canonicalized)
+    # Remove whitespace in front of commas.
+    canonicalized = re.sub(r'\s+,', ',', canonicalized)
 
     canonicalized = canonicalized.strip()
 
