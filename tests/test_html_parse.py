@@ -163,6 +163,39 @@ class HtmlParseTest(unittest.TestCase):
                 '2015-10-20T03:09:44+00:00',
             })
 
+    def test_scrapes_ketovangelist_kitchen_recipe(self):
+        self.assertEqual(
+            html_parse.
+            parse({
+                'url':
+                'http://www.ketovangelistkitchen.com/lemon-shortbread-cookies/',
+                'referer':
+                'http://www.ketovangelistkitchen.com/category/baked-goods/',
+            },
+                  _read_test_file(
+                      'ketovangelistkitchen-com_lemon-shortbread-cookies.html')
+                 ),
+            {
+                'title':
+                u'Lemon Shortbread Cookies',
+                'url':
+                'http://www.ketovangelistkitchen.com/lemon-shortbread-cookies/',
+                'category':
+                'dessert',
+                'ingredients': [
+                    u'almond flour',
+                    u'chia seeds, finely ground',
+                    u'xylitol',
+                    u'xanthan gum',
+                    u'Zest of lemons',
+                    u'cold butter',
+                ],
+                'mainImage':
+                'http://www.ketovangelistkitchen.com/wp-content/uploads/2016/12/2013-5-27-Lemon-Shortbread-Cookies-7567.jpg',
+                'publishedTime':
+                '2016-12-19T20:29:38+00:00',
+            })
+
     def test_scrapes_queen_bs_recipe(self):
         self.assertEqual(
             html_parse.

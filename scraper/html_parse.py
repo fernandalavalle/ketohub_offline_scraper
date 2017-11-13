@@ -5,6 +5,7 @@ from scrapy import http
 import keto_size_me
 import ketoconnect
 import ketogasm
+import ketovangelist_kitchen
 import queen_bs
 import ruled_me
 
@@ -18,6 +19,7 @@ def parse(metadata, html):
         'ketosizeme.com': keto_size_me,
         'ketoconnect.net': ketoconnect,
         'ketogasm.com': ketogasm,
+        'ketovangelistkitchen.com': ketovangelist_kitchen,
         'queenbsincredibleedibles.com': queen_bs,
         'ruled.me': ruled_me,
     }
