@@ -16,6 +16,44 @@ class HtmlParseTest(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
+    def test_scrapes_hey_keto_mama_recipe(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://www.heyketomama.com/keto-white-chicken-chili/',
+                'referer':
+                'https://www.heyketomama.com/category/recipes/',
+            }, _read_test_file(
+                'heyketomama-com_keto-white-chicken-chili.html')),
+            {
+                'title':
+                'Keto White Chicken Chili',
+                'url':
+                'https://www.heyketomama.com/keto-white-chicken-chili/',
+                'category':
+                None,
+                'ingredients': [
+                    u'chicken',
+                    u'chicken broth',
+                    u'garlic cloves, finely minced',
+                    u'chopped green chiles',
+                    u'diced jalapeno',
+                    u'diced green pepper',
+                    u'diced onion',
+                    u'butter',
+                    u'heavy whipping cream',
+                    u'cream cheese',
+                    u'cumin',
+                    u'oregano',
+                    u'cayenne',
+                    u'Salt and Pepper',
+                ],
+                'mainImage':
+                'https://www.heyketomama.com/wp-content/uploads/2017/10/keto-white-chicken-chili-sm.png',
+                'publishedTime':
+                '2017-10-30T01:02:11+00:00',
+            })
+
     def test_scrapes_ketoconnect_recipe(self):
         self.assertEqual(
             html_parse.parse({
@@ -154,8 +192,8 @@ class HtmlParseTest(unittest.TestCase):
                     u'Wild Oats Organic Tomato Basil Pasta Sauce',
                     u'Frigo Shredded Parmesan Cheese',
                     u'Low Moisture Part-skim Mozzarella Cheese',
-                    u'Wild Oats Organic Chili powder', u'Oregano', u'Garlic',
-                    u'Large Egg'
+                    u'Wild Oats Organic Chili powder', u'Oregano',
+                    u'Garlic Cloves', u'Large Egg'
                 ],
                 'mainImage':
                 u'https://ketosizeme.com/wp-content/uploads/2015/05/Low-Carb-Keto-Baked-Spaghetti-.jpg',

@@ -2,6 +2,7 @@ import urlparse
 
 from scrapy import http
 
+import hey_keto_mama
 import keto_size_me
 import ketoconnect
 import ketogasm
@@ -16,6 +17,7 @@ def parse(metadata, html):
     domain = _parse_domain(metadata['url'])
 
     parser_map = {
+        'heyketomama.com': hey_keto_mama,
         'ketosizeme.com': keto_size_me,
         'ketoconnect.net': ketoconnect,
         'ketogasm.com': ketogasm,
