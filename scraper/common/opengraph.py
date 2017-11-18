@@ -2,6 +2,11 @@ from dateutil import parser
 import pytz
 
 
+def find_title(response):
+    return response.xpath(
+        '/html/head/meta[@property="og:title"]/@content').extract_first()
+
+
 def find_image(response):
     return response.xpath(
         '/html/head/meta[@property="og:image"]/@content').extract_first()

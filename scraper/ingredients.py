@@ -33,30 +33,30 @@ def parse(ingredient_raw):
 
     # Remove number ranges.
     canonicalized = re.sub(r'~?\d+-\d+', '', canonicalized)
-    # Remove number of units.
-    canonicalized = re.sub(r'~?((\d+/\d+)|(\d+(\.\d+)?))( ?(g|(lbs?\.?)))?', '',
-                           canonicalized)
-    # Replace vulgar fraction characters
-    canonicalized = re.sub(u'[\u00bc-\u00be]+', '', canonicalized)
-    canonicalized = re.sub(u'[\u2150-\u215f]+', '', canonicalized)
-    # Remove units of measure.
+    # Remove numbers, fractions, and decimals.
+    #canonicalized = re.sub(r'\d+([\.\/\s\-]+\d+)?', '', canonicalized)
+    # Replace vulgar fraction characters with dummy fraction (will be removed
+    # later).
+    canonicalized = re.sub(u'[\u00bc-\u00be]+', '1/2', canonicalized)
+    canonicalized = re.sub(u'[\u2150-\u215f]+', '1/2', canonicalized)
+    # Remove non-abbreviated units of measure.
     canonicalized = re.sub(
-        (r'\b((ounce)|(pound)|(tablespoo+n)|(teaspoo+n\.?)|(cup)|'
-         r'(inche?))s?\.?\s?\b'),
+        (r'~?\d+([\.\/\s\-]+\d+)?\s*((ounce)|(pound)|(tablespoo+n)|'
+         r'(teaspoo+n\.?)|(cup)|(inche?)|(can)|(cup)|(pint)|(container)|(bar)|'
+         r'(clove)|(drop)|(stalk))s?\.?\s?\b'),
         '',
         canonicalized,
         flags=re.IGNORECASE)
+    # Remove abbreviated units of measure.
     canonicalized = re.sub(
-        r'((fl\.? oz)|(oz)|(lb)|(tbsp)|(tsp)|(pint))(\.|\b)',
+        r'~?\d+([\.\/\s\-]+\d+)?\s*((fl\.? oz)|(g)|(lbs?)|(oz)|(tbsp)|(tsp)|'
+        r'(pint))(\.|\b)',
         '',
         canonicalized,
         flags=re.IGNORECASE)
-    # Remove other units of measure
+    # Remove remaining numbers.
     canonicalized = re.sub(
-        r'\b((can)|(container)|(bar)|(clove)|(drop)|(stalk))s?\b',
-        '',
-        canonicalized,
-        flags=re.IGNORECASE)
+        r'\d+([\.\/\s\-]+\d+)?', '', canonicalized, flags=re.IGNORECASE)
     canonicalized = re.sub(
         r'\bpinch( of)?', '', canonicalized, flags=re.IGNORECASE)
     # Replace slice or slices, but not sliced. Cube or cubes, but not cubed.
@@ -72,8 +72,9 @@ def parse(ingredient_raw):
         canonicalized,
         flags=re.IGNORECASE)
 
-    # Remove empty parentheses.
-    canonicalized = re.sub(r'\([\s\-]*\)', '', canonicalized)
+    # Remove leading 'can'.
+    canonicalized = re.sub('^\s*can', '', canonicalized)
+
     # Hack to remove all the stray leading characters we missed earlier.
     canonicalized = re.sub(r'^\s*([\-/+,%]\s*)+', '', canonicalized)
     canonicalized = re.sub(r'^\s*of', '', canonicalized)
