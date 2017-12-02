@@ -74,6 +74,7 @@ class ParseIngredientTest(unittest.TestCase):
             ('2 cloves garlic', 'garlic'),
             ('2 cloves (6 g) garlic,peeled', 'garlic'),
             ('5 bars Chocoperfection', 'Chocoperfection'),
+            ('1 head cabbage thinly sliced', 'cabbage thinly sliced'),
             ('1 bar (10g) Chocoperfection Dark Chocolate',
              'Chocoperfection Dark Chocolate'),
             ('2 g fresh oregano', 'fresh oregano'),
