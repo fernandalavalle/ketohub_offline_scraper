@@ -12,6 +12,12 @@ class TitlesCanonicalizeTest(unittest.TestCase):
             titles.canonicalize('Keto Recipe: Cheesy Spinach'),
             'Cheesy Spinach')
 
+    def test_removes_curly_braces(self):
+        self.assertEqual(
+            titles.canonicalize(
+                'Keto Fried Chicken {Asiago & Parmesan Breading}'),
+            'Keto Fried Chicken')
+
     def test_enforces_conventions(self):
         self.assertEqual(
             titles.canonicalize('Gluten Free Pizza'), 'Gluten-Free Pizza')

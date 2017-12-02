@@ -4,6 +4,7 @@ import re
 def canonicalize(title):
     canonicalized = title
     canonicalized = _remove_prefix(canonicalized)
+    canonicalized = _remove_curly_brace_text(canonicalized)
     canonicalized = _remove_junk_words(canonicalized)
     canonicalized = _normalize_conventions(canonicalized)
     canonicalized = _collapse_whitespace(canonicalized)
@@ -16,6 +17,10 @@ def _remove_prefix(title):
     for prefix in prefixes:
         stripped = stripped.replace(prefix, '').strip()
     return stripped
+
+
+def _remove_curly_brace_text(title):
+    return re.sub(r'{.*}', '', title)
 
 
 def _remove_junk_words(title):
