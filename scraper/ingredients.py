@@ -42,7 +42,7 @@ def parse(ingredient_raw):
     # Remove non-abbreviated units of measure.
     canonicalized = re.sub(
         (r'~?\d+([\.\/\s\-]+\d+)?\s*((ounce)|(pound)|(tablespoo+n)|'
-         r'(teaspoo+n\.?)|(cup)|(inche?)|(can)|(cup)|(pint)|(container)|(bar)|'
+         r'(teaspoo+n\.?)|(cup)|(scoop)|(inche?)|(can)|(cup)|(pint)|(container)|(bar)|'
          r'(clove)|(head)|(drop)|(stalk))s?\.?\s?\b'),
         '',
         canonicalized,
@@ -55,8 +55,7 @@ def parse(ingredient_raw):
         canonicalized,
         flags=re.IGNORECASE)
     # Remove remaining numbers.
-    canonicalized = re.sub(
-        r'\d+([\.\/\s\-]+\d+)?', '', canonicalized, flags=re.IGNORECASE)
+    canonicalized = re.sub(r'\d+([\.\/\s\-]+\d+)?[^\d%]', '', canonicalized)
     canonicalized = re.sub(
         r'\bpinch( of)?', '', canonicalized, flags=re.IGNORECASE)
     # Replace slice or slices, but not sliced. Cube or cubes, but not cubed.

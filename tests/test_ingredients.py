@@ -46,7 +46,7 @@ class ParseIngredientTest(unittest.TestCase):
             ('1 oz. coconut oil', 'coconut oil'),
             ('1 pound ground chorizo', 'ground chorizo'),
             ('4 ounces smoked salmon', 'smoked salmon'),
-            ('4 ounces 85% dark chocolate', 'dark chocolate'),
+            ('4 ounces 85% dark chocolate', '85% dark chocolate'),
             ('3.80 lb(s), boneless beef chuck roast',
              'boneless beef chuck roast'),
             ('1 cup chopped pecans', 'chopped pecans'),
@@ -88,6 +88,8 @@ class ParseIngredientTest(unittest.TestCase):
             ('3 zucchini squash (1 lb total)', 'zucchini squash'),
             ('1lb ground hot italian sausage', 'ground hot italian sausage'),
             ('1 1/2 lbs. Chicken Thighs, skin on', 'Chicken Thighs, skin on'),
+            ('2 scoops Chocolate 100% Casein Protein Powder',
+             'Chocolate 100% Casein Protein Powder'),
             ('1 container Wild Oats Organic Tomato Basil Pasta Sauce',
              'Wild Oats Organic Tomato Basil Pasta Sauce'),)
         for raw, expected in cases:
