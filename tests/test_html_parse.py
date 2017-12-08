@@ -264,7 +264,7 @@ class HtmlParseTest(unittest.TestCase):
                 'mainImage':
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/09/img_6266.jpg',
                 'publishedTime':
-                '2017-09-19T09:00:46+00:00',
+                '2017-09-19T10:00:46+00:00',
             })
 
     def test_scrapes_queen_bs_recipe_with_link_in_ingredients(self):
@@ -300,5 +300,5 @@ class HtmlParseTest(unittest.TestCase):
                 'mainImage':
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/11/img_7054.jpg',
                 'publishedTime':
-                '2017-11-03T09:00:53+00:00',
+                '2017-11-03T10:00:53+00:00',
             })
