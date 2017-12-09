@@ -22,18 +22,39 @@ def parse_image(response, _=None):
 
 
 def parse_ingredients(response, _=None):
-    ingredients_raw = []
-    for selector in response.xpath(
-            '//strong[contains(text(),"What You Need")]/ancestor::p/following-sibling::ul[1]/li'
-    ):
-        extracted = selector.xpath('string(self::*)').extract_first()
-        ingredients_raw.append(extracted)
-    if not ingredients_raw:
-        return None
+    ingredients_raw = _find_ingredients(response)
     ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
     # Remove empty ingredients.
     ingredients_parsed = [r for r in ingredients_parsed if r]
     return ingredients_parsed
+
+
+def _find_ingredients(response):
+    ingredients = _find_ingredients_by_css_class(response)
+    if ingredients:
+        return ingredients
+    ingredients = _find_ingredients_by_header_text(response)
+    if ingredients:
+        return ingredients
+    return None
+
+
+def _find_ingredients_by_css_class(response):
+    ingredients = []
+    for selector in response.xpath('//li[contains(@class, "ingredient")]'):
+        extracted = selector.xpath('string(self::*)').extract_first()
+        ingredients.append(extracted)
+    return ingredients
+
+
+def _find_ingredients_by_header_text(response):
+    ingredients = []
+    for selector in response.xpath(
+            '//strong[contains(text(),"What You Need")]/ancestor::p/following-sibling::ul[1]/li'
+    ):
+        extracted = selector.xpath('string(self::*)').extract_first()
+        ingredients.append(extracted)
+    return ingredients
 
 
 def parse_published_time(response, _=None):
