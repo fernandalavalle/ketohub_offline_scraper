@@ -234,6 +234,42 @@ class HtmlParseTest(unittest.TestCase):
                 '2016-12-19T20:29:38+00:00',
             })
 
+    def test_scrapes_ketovangelist_kitchen_recipe_unexpected_ingredients(self):
+        self.assertEqual(
+            html_parse.parse(
+                {
+                    'url':
+                    'http://www.ketovangelistkitchen.com/creamy-cucumber-soup/',
+                    'referer':
+                    'http://www.ketovangelistkitchen.com/category/soup/',
+                },
+                _read_test_file(
+                    'ketovangelistkitchen-com_creamy-cucumber-soup.html')),
+            {
+                'title':
+                u'Creamy Cucumber Soup',
+                'url':
+                'http://www.ketovangelistkitchen.com/creamy-cucumber-soup/',
+                'category':
+                'side',
+                'ingredients': [
+                    u'coconut oil or avocado oil',
+                    u'onion, chopped',
+                    u'English cucumbers, chopped',
+                    u'unsweetened thin coconut milk',
+                    u'sea salt',
+                    u'chopped fresh chives',
+                    u'small avocados, skin and pits removed',
+                    u'heavy cream',
+                    u'white wine',
+                    u'Chopped green onions for garnish',
+                ],
+                'mainImage':
+                u'http://www.ketovangelistkitchen.com/wp-content/uploads/2017/01/2012-10-19-Creamy-Cucumber-Soup-4907.jpg',
+                'publishedTime':
+                '2017-01-23T08:15:03+00:00',
+            })
+
     def test_scrapes_queen_bs_recipe(self):
         self.assertEqual(
             html_parse.
