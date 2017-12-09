@@ -33,6 +33,20 @@ class KetogasmParseTitleTest(unittest.TestCase):
                     body="""
 <h1 class="entry-title">Vodka Mojito: Low Carb and Sugar-Free</h1>""")),
             'Vodka Mojito')
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Hot Buttered Rum Recipe: Low Carb, Sugar Free</h1>""")),
+            'Hot Buttered Rum')
+        self.assertEqual(
+            ketogasm.parse_title(
+                http.TextResponse(
+                    url='',
+                    body="""
+<h1 class="entry-title">Gin Fizz Cocktail Recipe &#8211; Low Carb &#038; Sugar Free!</h1>
+""")), 'Gin Fizz Cocktail')
 
     def test_strips_tags_after_dash(self):
         self.assertEqual(
