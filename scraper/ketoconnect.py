@@ -1,15 +1,19 @@
 from dateutil import parser
 import pytz
+import re
 
 from common import opengraph
 from common import recipe_schema
-import titles
 
 
 def parse_title(response, _=None):
     title_raw = ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
-    return titles.canonicalize(title_raw.split('|')[0].strip())
+    return _strip_title_flavor_text(title_raw)
+
+
+def _strip_title_flavor_text(title):
+    return re.sub(r'\s*\|.+$', '', title)
 
 
 def parse_category(_, metadata):

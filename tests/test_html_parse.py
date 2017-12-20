@@ -63,7 +63,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ketoconnect.net/main-dishes/',
             }, _read_test_file('low-carb-pizza-crust.html')), {
                 'title':
-                'Low Carb Pizza Crust',
+                u'Low Carb Pizza Crust',
                 'url':
                 'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
                 'category':
@@ -83,7 +83,7 @@ class HtmlParseTest(unittest.TestCase):
                     u'Oregano',
                 ],
                 'mainImage':
-                'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
+                u'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
                 'publishedTime':
                 '2017-10-08T09:52:09+00:00',
             })

@@ -1,11 +1,9 @@
 from common import errors
 from common import opengraph
-import titles
 
 
 def parse_title(response, _=None):
-    return titles.canonicalize(
-        response.xpath('//h1//text()').extract_first().strip())
+    return response.xpath('//h1//text()').extract_first().strip()
 
 
 def parse_category(response, _=None):

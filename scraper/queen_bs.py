@@ -1,12 +1,10 @@
 from common import opengraph
-import titles
 
 
 def parse_title(response, _=None):
-    title_raw = ''.join(
+    return ''.join(
         response.xpath('//h2[contains(@class, "entry-title")]//text()')
         .extract_first()).strip()
-    return titles.canonicalize(title_raw)
 
 
 def parse_category(unused_response, _=None):
