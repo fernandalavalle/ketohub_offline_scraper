@@ -41,8 +41,7 @@ def parse_image(response, _=None):
 
 
 def parse_ingredients(response, _=None):
-    schema = recipe_schema.read(response)
-    return schema['recipeIngredient']
+    return recipe_schema.read(response)['recipeIngredient']
 
 
 def parse_published_time(response, _=None):
