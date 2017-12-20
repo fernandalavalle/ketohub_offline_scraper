@@ -1,13 +1,11 @@
 from common import errors
 from common import opengraph
 from common import recipe_schema
-import titles
 
 
 def parse_title(response, _=None):
-    title_raw = ''.join(
+    return ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
-    return titles.canonicalize(title_raw)
 
 
 def parse_category(response, _=None):

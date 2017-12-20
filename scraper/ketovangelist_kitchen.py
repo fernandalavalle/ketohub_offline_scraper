@@ -1,12 +1,9 @@
 from common import opengraph
-import ingredients
-import titles
 
 
 def parse_title(response, _=None):
-    title_raw = ''.join(
+    return ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
-    return titles.canonicalize(title_raw)
 
 
 def parse_category(_, metadata):
@@ -22,11 +19,7 @@ def parse_image(response, _=None):
 
 
 def parse_ingredients(response, _=None):
-    ingredients_raw = _find_ingredients(response)
-    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
-    # Remove empty ingredients.
-    ingredients_parsed = [r for r in ingredients_parsed if r]
-    return ingredients_parsed
+    return _find_ingredients(response)
 
 
 def _find_ingredients(response):

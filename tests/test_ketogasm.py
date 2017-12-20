@@ -39,14 +39,14 @@ class KetogasmParseTitleTest(unittest.TestCase):
                     url='',
                     body="""
 <h1 class="entry-title">Hot Buttered Rum Recipe: Low Carb, Sugar Free</h1>""")),
-            'Hot Buttered Rum')
+            'Hot Buttered Rum Recipe')
         self.assertEqual(
             ketogasm.parse_title(
                 http.TextResponse(
                     url='',
                     body="""
 <h1 class="entry-title">Gin Fizz Cocktail Recipe &#8211; Low Carb &#038; Sugar Free!</h1>
-""")), 'Gin Fizz Cocktail')
+""")), 'Gin Fizz Cocktail Recipe')
 
     def test_strips_tags_after_dash(self):
         self.assertEqual(
@@ -72,7 +72,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
                     url='',
                     body="""
 <h1 class="entry-title">Keto Flatbread Recipe &#x2013; Low Carb, Gluten Free</h1>"""
-                )), u'Keto Flatbread')
+                )), u'Keto Flatbread Recipe')
 
 
 class KetogasmParseCategoryTest(unittest.TestCase):

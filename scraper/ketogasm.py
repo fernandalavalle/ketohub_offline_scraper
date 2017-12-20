@@ -3,7 +3,6 @@ import re
 
 from common import opengraph
 from common import recipe_schema
-import titles
 
 logger = logging.getLogger(__name__)
 
@@ -12,8 +11,7 @@ def parse_title(response, _=None):
     title_raw = ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
     title_stripped = _strip_title_tags(title_raw)
-    title_stripped = re.sub(u'\u2013$', '', title_stripped).strip()
-    return titles.canonicalize(title_stripped)
+    return re.sub(u'\u2013$', '', title_stripped).strip()
 
 
 def parse_category(response, _=None):

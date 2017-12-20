@@ -10,6 +10,7 @@ import ketogasm
 import ketovangelist_kitchen
 import queen_bs
 import ruled_me
+import titles
 
 
 def parse(metadata, html):
@@ -32,12 +33,14 @@ def parse(metadata, html):
 
     parser = parser_map[domain]
 
+    title = titles.canonicalize(parser.parse_title(response, metadata))
+
     ingredients = _parse_ingredients(
         parser.parse_ingredients(response, metadata))
 
     return {
         'url': metadata['url'],
-        'title': parser.parse_title(response, metadata),
+        'title': title,
         'category': parser.parse_category(response, metadata),
         'mainImage': parser.parse_image(response, metadata),
         'ingredients': ingredients,

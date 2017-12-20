@@ -14,4 +14,4 @@ class HeyKetoMamaParseTitleTest(unittest.TestCase):
                     url='',
                     body="""
 <meta property="og:title" content="Cream Cheese &amp; Salami Keto Pinwheels - Hey Keto Mama" />"""
-                )), u'Cream Cheese and Salami Keto Pinwheels')
+                )), u'Cream Cheese & Salami Keto Pinwheels')
