@@ -1,6 +1,5 @@
 from common import errors
 from common import opengraph
-import ingredients
 import titles
 
 
@@ -38,11 +37,7 @@ def parse_ingredients(response, _=None):
     for ingredient_raw in response.xpath('//table//tr/td[1]//text()').extract():
         ingredients_raw.append(ingredient_raw)
     # First row is headers, last two rows are totals and per-serving macros.
-    ingredients_raw = ingredients_raw[1:-2]
-    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
-    # Remove empty ingredients.
-    ingredients_parsed = [r for r in ingredients_parsed if r]
-    return ingredients_parsed
+    return ingredients_raw[1:-2]
 
 
 def parse_published_time(response, _=None):
