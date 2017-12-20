@@ -1,7 +1,6 @@
 from common import errors
 from common import opengraph
 from common import recipe_schema
-import ingredients
 import titles
 
 
@@ -29,11 +28,7 @@ def parse_image(response, _=None):
 
 def parse_ingredients(response, _=None):
     schema = recipe_schema.read(response)
-    ingredients_raw = schema['recipeIngredient']
-    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
-    # Remove empty ingredients.
-    ingredients_parsed = [r for r in ingredients_parsed if r]
-    return ingredients_parsed
+    return schema['recipeIngredient']
 
 
 def parse_published_time(response, _=None):

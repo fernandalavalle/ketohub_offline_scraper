@@ -1,5 +1,4 @@
 from common import opengraph
-import ingredients
 import titles
 
 
@@ -28,12 +27,7 @@ def parse_ingredients(response, _=None):
             '//div[contains(@class, "post-content")]//ul/li'):
         extracted = selector.xpath('string(self::*)').extract_first()
         ingredients_raw.append(extracted)
-    if not ingredients_raw:
-        return None
-    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
-    # Remove empty ingredients.
-    ingredients_parsed = [r for r in ingredients_parsed if r]
-    return ingredients_parsed
+    return ingredients_raw
 
 
 def parse_published_time(response, _=None):

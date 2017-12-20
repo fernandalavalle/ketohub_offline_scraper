@@ -3,6 +3,7 @@ import urlparse
 from scrapy import http
 
 import hey_keto_mama
+import ingredients
 import keto_size_me
 import ketoconnect
 import ketogasm
@@ -31,14 +32,23 @@ def parse(metadata, html):
 
     parser = parser_map[domain]
 
+    ingredients = _parse_ingredients(
+        parser.parse_ingredients(response, metadata))
+
     return {
         'url': metadata['url'],
         'title': parser.parse_title(response, metadata),
         'category': parser.parse_category(response, metadata),
         'mainImage': parser.parse_image(response, metadata),
-        'ingredients': parser.parse_ingredients(response, metadata),
+        'ingredients': ingredients,
         'publishedTime': parser.parse_published_time(response, metadata),
     }
+
+
+def _parse_ingredients(ingredients_raw):
+    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
+    # Remove empty ingredients.
+    return [p for p in ingredients_parsed if p]
 
 
 def _parse_domain(url):
