@@ -8,6 +8,7 @@ import keto_size_me
 import ketoconnect
 import ketogasm
 import ketovangelist_kitchen
+import low_carb_yum
 import queen_bs
 import ruled_me
 import titles
@@ -24,6 +25,7 @@ def parse(metadata, html):
         'ketoconnect.net': ketoconnect,
         'ketogasm.com': ketogasm,
         'ketovangelistkitchen.com': ketovangelist_kitchen,
+        'lowcarbyum.com': low_carb_yum,
         'queenbsincredibleedibles.com': queen_bs,
         'ruled.me': ruled_me,
     }

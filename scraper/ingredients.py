@@ -25,11 +25,17 @@ def parse(ingredient_raw):
     # Replace accented e with simple e.
     canonicalized = re.sub(u'[\u00e8-\u00eb]', 'e', canonicalized)
 
+    # Remove registered and copyright symbols.
+    canonicalized = re.sub(u'[\u00a9\u00ae]', '', canonicalized)
+
     # Remove text in parentheses.
     canonicalized = re.sub('\(.*\)', '', canonicalized)
     # Remove "Optional:" prefix.
     canonicalized = re.sub(
         '^optional:\s*', '', canonicalized, flags=re.IGNORECASE)
+
+    # Remove brand names.
+    canonicalized = canonicalized.replace('NatureRaised Farms', '')
 
     # Remove number ranges.
     canonicalized = re.sub(r'~?\d+-\d+', '', canonicalized)
@@ -43,7 +49,7 @@ def parse(ingredient_raw):
     canonicalized = re.sub(
         (r'~?\d+([\.\/\s\-]+\d+)?\s*((ounce)|(pound)|(tablespoo+n)|'
          r'(teaspoo+n\.?)|(cup)|(scoop)|(inche?)|(can)|(cup)|(pint)|(container)|(bar)|'
-         r'(clove)|(head)|(drop)|(stalk))s?\.?\s?\b'),
+         r'(clove)|(head)|(drop)|(stalk)|(piece))s?\.?\s?\b'),
         '',
         canonicalized,
         flags=re.IGNORECASE)

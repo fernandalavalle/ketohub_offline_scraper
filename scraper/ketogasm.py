@@ -1,3 +1,4 @@
+import titles
 import logging
 import re
 
@@ -12,6 +13,19 @@ def parse_title(response, _=None):
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
     title_stripped = _strip_title_tags(title_raw)
     return re.sub(u'\u2013$', '', title_stripped).strip()
+
+
+def _strip_title_tags(title_raw):
+    title_stripped = title_raw.strip()
+    title_stripped = re.sub(r'\[.*\]', '', title_stripped).strip()
+    title_stripped = re.sub(r'\|.*', '', title_stripped).strip()
+    parts = re.split(u'[\u2013:]', title_stripped)
+    if len(parts) == 1:
+        return title_stripped
+    tag_part = parts[-1].strip()
+    if titles.is_just_tags(tag_part):
+        return parts[0].strip()
+    return title_stripped.strip()
 
 
 def parse_category(response, _=None):
@@ -44,22 +58,6 @@ def parse_ingredients(response, _=None):
 
 def parse_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()
-
-
-def _strip_title_tags(title_raw):
-    title_stripped = title_raw.strip()
-    title_stripped = re.sub(r'\[.*\]', '', title_stripped).strip()
-    title_stripped = re.sub(r'\|.*', '', title_stripped).strip()
-    parts = re.split(u'[\u2013:]', title_stripped)
-    if len(parts) == 1:
-        return title_stripped
-    tag_part = parts[-1].strip()
-    tags_stripped = re.sub((r'(and)|(Low(-|\s)Carb)|(Gluten(-|\s)Free)|(Keto)'
-                            r'|(Dairy(-|\s)Free)|(Sugar(-|\s)Free)|[^A-Za-z]'),
-                           '', tag_part)
-    if not tags_stripped:
-        return parts[0]
-    return title_stripped
 
 
 def _canonicalize_category(category):

@@ -20,6 +20,7 @@ class ParseIngredientTest(unittest.TestCase):
             (u'\u201cBest Low Carb\u201d tortillas',
              '"Best Low Carb" tortillas'),
             (u'8 oz Cheddar Shredded \u2013 Mild', 'Cheddar Shredded - Mild'),
+            (u'12 slices of NatureRaised Farms\xae Bacon', 'Bacon'),
             ('10.5 ounces (300 g) sugar-free dark chocolate',
              'sugar-free dark chocolate'),
             ('3 oz. / 85g cold butter', 'cold butter'),
