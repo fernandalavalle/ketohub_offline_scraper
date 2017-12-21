@@ -11,6 +11,12 @@ def canonicalize(title):
     return canonicalized.strip()
 
 
+def is_just_tags(text):
+    return re.sub((r'(and)|(,\s*)|(Low(-|\s)Carb)|(Gluten(-|\s)Free)'
+                   r'|(Keto)|(Paleo)|(Dairy(-|\s)Free)|'
+                   r'(Sugar(-|\s)Free)|[^A-Za-z]'), '', text).strip() == ''
+
+
 def _remove_prefix(title):
     stripped = title
     prefixes = ['Keto Bites:', 'Keto Recipe:']

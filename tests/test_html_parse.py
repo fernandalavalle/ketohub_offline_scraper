@@ -270,6 +270,80 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-01-23T08:15:03+00:00',
             })
 
+    def test_scrapes_low_carb_yum_recipe(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'https://lowcarbyum.com/baked-sea-scallops/',
+                'referer':
+                'https://lowcarbyum.com/recipes/',
+            }, _read_test_file('lowcarbyum-com_baked-sea-scallops.html')), {
+                'title':
+                u'Baked Sea Scallops with Crispy Gluten-Free Topping',
+                'url':
+                'https://lowcarbyum.com/baked-sea-scallops/',
+                'category':
+                'appetizer',
+                'ingredients': [
+                    u'sea scallops on the half shell',
+                    u'garlic',
+                    u'butter',
+                    u'cheddar cheese',
+                    u'mozzarella',
+                    u'heavy cream',
+                    u'pork rind',
+                    u'jalapenos',
+                    u'lemons',
+                    u'salt and black Pepper',
+                    u'fresh parsley for garnishing',
+                    u'hot water for soaking shells',
+                ],
+                'mainImage':
+                u'https://lowcarbyum.com/wp-content/uploads/2017/08/baked-sea-scallops-l.jpg',
+                'publishedTime':
+                '2017-08-11T05:26:46+00:00',
+            })
+
+    def test_raises_error_on_low_carb_yum_non_recipe_post(self):
+        with self.assertRaises(errors.NoRecipeFoundError):
+            html_parse.parse(
+                {
+                    'url':
+                    'https://lowcarbyum.com/bacon-wrapped-cheese-sticks/',
+                    'referer': 'https://lowcarbyum.com/recipes/',
+                },
+                _read_test_file(
+                    'lowcarbyum-com_bacon-wrapped-cheese-sticks.html'))
+
+    def test_scrapes_low_carb_yum_recipe_with_trailing_title_tag(self):
+        self.assertEqual(
+            html_parse.parse(
+                {
+                    'url':
+                    'https://lowcarbyum.com/low-carb-egg-muffins-wrapped-bacon/',
+                    'referer':
+                    'https://lowcarbyum.com/recipes/',
+                },
+                _read_test_file(
+                    'lowcarbyum-com_low-carb-egg-muffins-wrapped-bacon.html')),
+            {
+                'title':
+                u'Low Carb Egg Muffins Wrapped in Bacon',
+                'url':
+                'https://lowcarbyum.com/low-carb-egg-muffins-wrapped-bacon/',
+                'category':
+                'breakfast',
+                'ingredients': [
+                    u'Bacon',
+                    u'large eggs',
+                    u'cheddar cheese',
+                ],
+                'mainImage':
+                u'https://lowcarbyum.com/wp-content/uploads/2016/10/low-carb-egg-muffins-wrapped-bacon-sq.jpg',
+                'publishedTime':
+                '2016-11-19T10:26:25+00:00',
+            })
+
     def test_scrapes_queen_bs_recipe(self):
         self.assertEqual(
             html_parse.
