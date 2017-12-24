@@ -9,7 +9,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
 
     def test_strips_bracketed_text(self):
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -18,7 +18,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
 
     def test_strips_tags_after_pipe(self):
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -27,21 +27,21 @@ class KetogasmParseTitleTest(unittest.TestCase):
 
     def test_strips_tags_after_colon(self):
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
 <h1 class="entry-title">Vodka Mojito: Low Carb and Sugar-Free</h1>""")),
             'Vodka Mojito')
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
 <h1 class="entry-title">Hot Buttered Rum Recipe: Low Carb, Sugar Free</h1>""")),
             'Hot Buttered Rum Recipe')
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -50,7 +50,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
 
     def test_strips_tags_after_dash(self):
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -59,7 +59,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
 
     def test_keeps_non_tag_text_after_dash(self):
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -67,7 +67,7 @@ class KetogasmParseTitleTest(unittest.TestCase):
                 )), u'Pumpkin Seed Bark \u2013 Dark Chocolate and Sea Salt')
 
         self.assertEqual(
-            ketogasm.parse_title(
+            ketogasm.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -79,7 +79,7 @@ class KetogasmParseCategoryTest(unittest.TestCase):
 
     def test_reads_none_category_when_category_not_defined(self):
         self.assertEqual(
-            ketogasm.parse_category(
+            ketogasm.scrape_category(
                 http.TextResponse(
                     url='',
                     body="""

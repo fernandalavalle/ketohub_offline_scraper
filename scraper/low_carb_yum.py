@@ -5,7 +5,7 @@ from common import recipe_schema
 import titles
 
 
-def parse_title(response, _=None):
+def scrape_title(response, _=None):
     title = opengraph.find_title(response).replace(' | Low Carb Yum', '')
     return _strip_title_tags(title)
 
@@ -21,7 +21,7 @@ def _strip_title_tags(title_raw):
     return title_stripped.strip()
 
 
-def parse_category(response, _=None):
+def scrape_category(response, _=None):
     category_raw = ''.join(
         response.xpath('//p[@class="entry-meta"]/a//text()').extract()).strip()
     return _canonicalize_category(category_raw)
@@ -63,13 +63,13 @@ def _canonicalize_category(category_raw):
     }[category_raw.lower()]
 
 
-def parse_image(response, _=None):
+def scrape_image(response, _=None):
     return opengraph.find_image(response)
 
 
-def parse_ingredients(response, _=None):
+def scrape_ingredients(response, _=None):
     return recipe_schema.read(response)['recipeIngredient']
 
 
-def parse_published_time(response, _=None):
+def scrape_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()

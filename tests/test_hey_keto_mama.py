@@ -9,7 +9,7 @@ class HeyKetoMamaParseTitleTest(unittest.TestCase):
 
     def test_strips_trailing_page_title(self):
         self.assertEqual(
-            hey_keto_mama.parse_title(
+            hey_keto_mama.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""

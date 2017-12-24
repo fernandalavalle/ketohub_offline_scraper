@@ -18,24 +18,24 @@ def parse(metadata, html):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=metadata['url'], body=html)
 
-    parser = _find_parser(metadata['url'])
+    scraper = _find_scraper(metadata['url'])
 
-    title = titles.canonicalize(parser.parse_title(response, metadata))
+    title = titles.canonicalize(scraper.scrape_title(response, metadata))
 
     ingredients = _parse_ingredients(
-        parser.parse_ingredients(response, metadata))
+        scraper.scrape_ingredients(response, metadata))
 
     return {
         'url': metadata['url'],
         'title': title,
-        'category': parser.parse_category(response, metadata),
-        'mainImage': parser.parse_image(response, metadata),
+        'category': scraper.scrape_category(response, metadata),
+        'mainImage': scraper.scrape_image(response, metadata),
         'ingredients': ingredients,
-        'publishedTime': parser.parse_published_time(response, metadata),
+        'publishedTime': scraper.scrape_published_time(response, metadata),
     }
 
 
-def _find_parser(url):
+def _find_scraper(url):
     domain = _parse_domain(url)
     try:
         return {
