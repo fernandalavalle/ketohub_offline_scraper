@@ -17,23 +17,8 @@ import titles
 def parse(metadata, html):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=metadata['url'], body=html)
-    domain = _parse_domain(metadata['url'])
 
-    parser_map = {
-        'heyketomama.com': hey_keto_mama,
-        'ketosizeme.com': keto_size_me,
-        'ketoconnect.net': ketoconnect,
-        'ketogasm.com': ketogasm,
-        'ketovangelistkitchen.com': ketovangelist_kitchen,
-        'lowcarbyum.com': low_carb_yum,
-        'queenbsincredibleedibles.com': queen_bs,
-        'ruled.me': ruled_me,
-    }
-
-    if domain not in parser_map:
-        raise ValueError('Unexpected domain: %s' % domain)
-
-    parser = parser_map[domain]
+    parser = _find_parser(metadata['url'])
 
     title = titles.canonicalize(parser.parse_title(response, metadata))
 
@@ -48,6 +33,23 @@ def parse(metadata, html):
         'ingredients': ingredients,
         'publishedTime': parser.parse_published_time(response, metadata),
     }
+
+
+def _find_parser(url):
+    domain = _parse_domain(url)
+    try:
+        return {
+            'heyketomama.com': hey_keto_mama,
+            'ketosizeme.com': keto_size_me,
+            'ketoconnect.net': ketoconnect,
+            'ketogasm.com': ketogasm,
+            'ketovangelistkitchen.com': ketovangelist_kitchen,
+            'lowcarbyum.com': low_carb_yum,
+            'queenbsincredibleedibles.com': queen_bs,
+            'ruled.me': ruled_me,
+        }[domain]
+    except KeyError:
+        raise ValueError('Unexpected domain: %s' % domain)
 
 
 def _parse_ingredients(ingredients_raw):
