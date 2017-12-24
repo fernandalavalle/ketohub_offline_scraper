@@ -9,7 +9,7 @@ class RuledMeParseTitleTest(unittest.TestCase):
 
     def test_scrapes_title_with_no_flavor_text(self):
         self.assertEqual(
-            ruled_me.parse_title(
+            ruled_me.scrape_title(
                 http.TextResponse(
                     url='', body="""
 <h1>Keto Beef Wellington</h1>
@@ -20,7 +20,7 @@ class RuledMeParseCategoryTest(unittest.TestCase):
 
     def test_scrapes_simple_category(self):
         self.assertEqual(
-            ruled_me.parse_category(
+            ruled_me.scrape_category(
                 http.TextResponse(
                     url='',
                     body="""
@@ -30,7 +30,7 @@ class RuledMeParseCategoryTest(unittest.TestCase):
 
     def test_scrapes_hierarchical_category(self):
         self.assertEqual(
-            ruled_me.parse_category(
+            ruled_me.scrape_category(
                 http.TextResponse(
                     url='',
                     body="""
@@ -40,7 +40,7 @@ Keto Recipes &gt; <a rel="nofollow" href="https://www.ruled.me/keto-recipes/" ti
 
     def test_scrapes_reverse_hierarchical_category(self):
         self.assertEqual(
-            ruled_me.parse_category(
+            ruled_me.scrape_category(
                 http.TextResponse(
                     url='',
                     body="""
@@ -56,7 +56,7 @@ class RuledMeParseImageTest(unittest.TestCase):
 
     def test_scrapes_image(self):
         self.assertEqual(
-            ruled_me.parse_image(
+            ruled_me.scrape_image(
                 http.TextResponse(
                     url='',
                     body="""

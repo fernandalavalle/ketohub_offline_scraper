@@ -9,7 +9,7 @@ class KetoConnectParseTitleTest(unittest.TestCase):
 
     def test_scrapes_title_with_no_flavor_text(self):
         self.assertEqual(
-            ketoconnect.parse_title(
+            ketoconnect.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -19,7 +19,7 @@ class KetoConnectParseTitleTest(unittest.TestCase):
 
     def test_scrapes_title_with_multiple_h1(self):
         self.assertEqual(
-            ketoconnect.parse_title(
+            ketoconnect.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -30,7 +30,7 @@ class KetoConnectParseTitleTest(unittest.TestCase):
 
     def test_scrapes_title_and_removes_flavor_text(self):
         self.assertEqual(
-            ketoconnect.parse_title(
+            ketoconnect.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
@@ -43,7 +43,7 @@ class KetoConnectParseCategoryTest(unittest.TestCase):
 
     def test_scrapes_non_opengraph_image(self):
         self.assertEqual(
-            ketoconnect.parse_category(
+            ketoconnect.scrape_category(
                 http.TextResponse(url='', body=''), {
                     'referer': 'https://www.ketoconnect.net/main-dishes/',
                 }), 'entree')
@@ -53,7 +53,7 @@ class KetoConnectParseImageTest(unittest.TestCase):
 
     def test_scrapes_opengraph_image(self):
         self.assertEqual(
-            ketoconnect.parse_image(
+            ketoconnect.scrape_image(
                 http.TextResponse(
                     url='',
                     body="""
@@ -64,7 +64,7 @@ class KetoConnectParseImageTest(unittest.TestCase):
 
     def test_scrapes_non_opengraph_image(self):
         self.assertEqual(
-            ketoconnect.parse_image(
+            ketoconnect.scrape_image(
                 http.TextResponse(
                     url='',
                     body="""

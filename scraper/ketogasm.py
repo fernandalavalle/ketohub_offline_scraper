@@ -8,7 +8,7 @@ from common import recipe_schema
 logger = logging.getLogger(__name__)
 
 
-def parse_title(response, _=None):
+def scrape_title(response, _=None):
     title_raw = ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
     title_stripped = _strip_title_tags(title_raw)
@@ -28,7 +28,7 @@ def _strip_title_tags(title_raw):
     return title_stripped.strip()
 
 
-def parse_category(response, _=None):
+def scrape_category(response, _=None):
     schema = recipe_schema.read(response)
     category_canonical = None
     try:
@@ -44,7 +44,7 @@ def parse_category(response, _=None):
     return category_canonical
 
 
-def parse_image(response, _=None):
+def scrape_image(response, _=None):
     opengraph_url = opengraph.find_image(response)
     if opengraph_url:
         return opengraph_url
@@ -52,11 +52,11 @@ def parse_image(response, _=None):
     return None
 
 
-def parse_ingredients(response, _=None):
+def scrape_ingredients(response, _=None):
     return recipe_schema.read(response)['recipeIngredient']
 
 
-def parse_published_time(response, _=None):
+def scrape_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()
 
 

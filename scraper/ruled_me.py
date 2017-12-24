@@ -2,11 +2,11 @@ from common import errors
 from common import opengraph
 
 
-def parse_title(response, _=None):
+def scrape_title(response, _=None):
     return response.xpath('//h1//text()').extract_first().strip()
 
 
-def parse_category(response, _=None):
+def scrape_category(response, _=None):
     category = None
     category_hierarchy = ''.join(
         response.xpath('//div[@class="postCategories"]//text()')
@@ -26,11 +26,11 @@ def parse_category(response, _=None):
     return category
 
 
-def parse_image(response, _=None):
+def scrape_image(response, _=None):
     return opengraph.find_image(response)
 
 
-def parse_ingredients(response, _=None):
+def scrape_ingredients(response, _=None):
     ingredients_raw = []
     for ingredient_raw in response.xpath('//table//tr/td[1]//text()').extract():
         ingredients_raw.append(ingredient_raw)
@@ -38,7 +38,7 @@ def parse_ingredients(response, _=None):
     return ingredients_raw[1:-2]
 
 
-def parse_published_time(response, _=None):
+def scrape_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()
 
 

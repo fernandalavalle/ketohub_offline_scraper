@@ -1,24 +1,24 @@
 from common import opengraph
 
 
-def parse_title(response, _=None):
+def scrape_title(response, _=None):
     return ''.join(
         response.xpath('//h1[@class="entry-title"]//text()').extract()).strip()
 
 
-def parse_category(_, metadata):
+def scrape_category(_, metadata):
     category_raw = _category_from_url(metadata['referer'])
     return _canonicalize_category(category_raw)
 
 
-def parse_image(response, _=None):
+def scrape_image(response, _=None):
     opengraph_url = opengraph.find_image(response)
     if opengraph_url:
         return opengraph_url
     return None
 
 
-def parse_ingredients(response, _=None):
+def scrape_ingredients(response, _=None):
     return _find_ingredients(response)
 
 
@@ -50,7 +50,7 @@ def _find_ingredients_by_header_text(response):
     return ingredients
 
 
-def parse_published_time(response, _=None):
+def scrape_published_time(response, _=None):
     return opengraph.find_published_time(response).isoformat()
 
 

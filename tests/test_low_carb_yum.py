@@ -9,7 +9,7 @@ class LowCarbYumParseTitleTest(unittest.TestCase):
 
     def test_strips_tags_after_pipe(self):
         self.assertEqual(
-            low_carb_yum.parse_title(
+            low_carb_yum.scrape_title(
                 http.TextResponse(
                     url='',
                     body="""
