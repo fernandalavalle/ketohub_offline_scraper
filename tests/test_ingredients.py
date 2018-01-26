@@ -79,6 +79,7 @@ class ParseIngredientTest(unittest.TestCase):
             ('1 bar (10g) Chocoperfection Dark Chocolate',
              'Chocoperfection Dark Chocolate'),
             ('2 g fresh oregano', 'fresh oregano'),
+            ('Xantham gum', 'xanthan gum'),
             ('150g Halloumi Cheese', 'Halloumi Cheese'),
             ('2 tablespoons soy sauce*', 'soy sauce'),
             ('15 drops liquid stevia', 'liquid stevia'),
