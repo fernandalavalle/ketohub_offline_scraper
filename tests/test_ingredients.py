@@ -10,6 +10,7 @@ class ParseIngredientTest(unittest.TestCase):
             (u'2.5 ounces (\u00bc whole) cucumber, seeded and grated',
              'cucumber'),
             ('1 (15-oz) can Ro*Tel', 'Ro*Tel'),
+            ('1 2/3 cup canned coconut milk', 'coconut milk'),
             (u'3 tablespoons Rao\u2019s marinara', 'Rao\'s marinara'),
             (u'1/4 tsp. garlic\u00a0powder', 'garlic powder'),
             (u'\u00bc cup heavy whipping cream', 'heavy whipping cream'),

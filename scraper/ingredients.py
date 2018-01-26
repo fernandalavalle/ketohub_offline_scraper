@@ -81,8 +81,8 @@ def parse(ingredient_raw):
     canonicalized = re.sub(
         'xantham', 'xanthan', canonicalized, flags=re.IGNORECASE)
 
-    # Remove leading 'can'.
-    canonicalized = re.sub('^\s*can', '', canonicalized)
+    # Remove leading 'can' or 'canned'.
+    canonicalized = re.sub('^\s*can(ned)?', '', canonicalized)
 
     # Hack to remove all the stray leading characters we missed earlier.
     canonicalized = re.sub(r'^\s*([\-/+,%]\s*)+', '', canonicalized)
