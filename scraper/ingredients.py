@@ -49,7 +49,7 @@ def parse(ingredient_raw):
     canonicalized = re.sub(
         (r'~?\d+([\.\/\s\-]+\d+)?\s*((ounce)|(pound)|(tablespoo+n)|'
          r'(teaspoo+n\.?)|(cup)|(scoop)|(inche?)|(can)|(cup)|(pint)|(container)|(bar)|'
-         r'(clove)|(head)|(drop)|(stalk)|(piece))s?\.?\s?\b'),
+         r'(clove)|(sprig)|(head)|(drop)|(stalk)|(piece))s?\.?\s?\b'),
         '',
         canonicalized,
         flags=re.IGNORECASE)

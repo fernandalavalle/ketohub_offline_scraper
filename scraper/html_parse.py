@@ -12,6 +12,7 @@ import low_carb_yum
 import queen_bs
 import ruled_me
 import titles
+import your_friends_j
 
 
 def parse(metadata, html):
@@ -47,6 +48,7 @@ def _find_scraper(url):
             'lowcarbyum.com': low_carb_yum,
             'queenbsincredibleedibles.com': queen_bs,
             'ruled.me': ruled_me,
+            'yourfriendsj.com': your_friends_j,
         }[domain]
     except KeyError:
         raise ValueError('Unexpected domain: %s' % domain)
