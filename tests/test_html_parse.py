@@ -412,3 +412,39 @@ class HtmlParseTest(unittest.TestCase):
                 'publishedTime':
                 '2017-11-03T10:00:53+00:00',
             })
+
+    def test_scrapes_your_friends_j_recipe(self):
+        self.assertEqual(
+            html_parse.parse({
+                'url':
+                'http://yourfriendsj.com/easy-homemade-taco-meat/',
+                'referer':
+                'http://yourfriendsj.com/category/keto/',
+            }, _read_test_file(
+                'yourfriendsj-com_easy-homemade-taco-meat.html')),
+            {
+                'title':
+                u'Easy Homemade Taco Meat',
+                'url':
+                'http://yourfriendsj.com/easy-homemade-taco-meat/',
+                'category':
+                None,
+                'ingredients': [
+                    u'Medium Ground Beef',
+                    u'Diced Onion',
+                    u'Minced Garlic',
+                    u'Worcestershire Sauce',
+                    u'Seasoning',
+                    u'Fresh Thyme',
+                    u'Onion Powder',
+                    u'Cumin',
+                    u'Black Pepper',
+                    u'Cayenne Pepper',
+                    u'Adobo All Purpose Seasoning',
+                    u'Paprika',
+                ],
+                'mainImage':
+                u'http://yourfriendsj.com/wp-content/uploads/2017/08/File_000-e1502154285989.jpeg',
+                'publishedTime':
+                '2017-08-08T02:20:11+00:00',
+            })
