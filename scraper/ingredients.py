@@ -77,6 +77,10 @@ def parse(ingredient_raw):
         canonicalized,
         flags=re.IGNORECASE)
 
+    # Fix misspelling of xanthan gum.
+    canonicalized = re.sub(
+        'xantham', 'xanthan', canonicalized, flags=re.IGNORECASE)
+
     # Remove leading 'can'.
     canonicalized = re.sub('^\s*can', '', canonicalized)
 
