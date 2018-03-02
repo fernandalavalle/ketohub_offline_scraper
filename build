@@ -24,4 +24,4 @@ pyflakes scraper/*.py tests/*.py
 
 # Check docstrings for style consistency.
 PYTHONPATH=$PYTHONPATH:$(pwd)/third_party/docstringchecker \
-  pylint --reports=n scraper tests
+  pylint --reports=n --rcfile=.pylintrc scraper tests
