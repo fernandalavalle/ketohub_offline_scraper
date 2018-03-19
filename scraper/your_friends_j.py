@@ -1,9 +1,15 @@
 import HTMLParser
+import logging
 import re
+
+from dateutil import parser
+import pytz
 
 from common import opengraph
 from common import recipe_schema
 import titles
+
+logger = logging.getLogger(__name__)
 
 
 def scrape_title(response, _=None):
@@ -25,7 +31,9 @@ def _strip_title_tags(title_raw):
 
 
 def scrape_category(response, _=None):
-    return None
+    category_url = _get_category_url(response)
+    category = _category_from_url(category_url)
+    return _normalize_category(category)
 
 
 def scrape_image(response, _=None):
@@ -46,4 +54,27 @@ def _html_decode(s):
 
 
 def scrape_published_time(response, _=None):
-    return opengraph.find_published_time(response).isoformat()
+    date_raw = recipe_schema.read(response)['datePublished']
+    return parser.parse(date_raw).replace(tzinfo=pytz.utc).isoformat()
+
+
+def _get_category_url(response):
+    return recipe_schema.read(response)['recipeCategory']
+
+
+def _category_from_url(url):
+    return url.split('/')[-2]
+
+
+def _normalize_category(category):
+    try:
+        return {
+            'desserts': 'dessert',
+            'dips-sauces': 'condiment',
+            'entree': 'entree',
+            'meat': 'entree',
+            'quick-break': 'side',
+        }[category]
+    except KeyError:
+        logger.info('Unexpected category: %s', category)
+        return None

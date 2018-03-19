@@ -415,36 +415,30 @@ class HtmlParseTest(unittest.TestCase):
 
     def test_scrapes_your_friends_j_recipe(self):
         self.assertEqual(
-            html_parse.parse({
-                'url':
-                'http://yourfriendsj.com/easy-homemade-taco-meat/',
-                'referer':
-                'http://yourfriendsj.com/category/keto/',
-            }, _read_test_file(
-                'yourfriendsj-com_easy-homemade-taco-meat.html')),
+            html_parse.parse(
+                {
+                    'url':
+                    'http://yourfriendsj.com/recipes/pico-de-gallo-salsa/',
+                    'referer': 'http://yourfriendsj.com/recipes/',
+                },
+                _read_test_file(
+                    'yourfriendsj-com_recipes_pico-de-gallo-salsa.html')),
             {
                 'title':
-                u'Easy Homemade Taco Meat',
+                u'Quick Pico de Gallo Salsa',
                 'url':
-                'http://yourfriendsj.com/easy-homemade-taco-meat/',
+                'http://yourfriendsj.com/recipes/pico-de-gallo-salsa/',
                 'category':
-                None,
+                'condiment',
                 'ingredients': [
-                    u'Medium Ground Beef',
-                    u'Diced Onion',
-                    u'Minced Garlic',
-                    u'Worcestershire Sauce',
-                    u'Seasoning',
-                    u'Fresh Thyme',
-                    u'Onion Powder',
-                    u'Cumin',
-                    u'Black Pepper',
-                    u'Cayenne Pepper',
-                    u'Adobo All Purpose Seasoning',
-                    u'Paprika',
+                    u'Roma Tomatos',
+                    u'Diced Onions',
+                    u'Diced Jalepeno',
+                    u'Salt',
+                    u'Pepper',
                 ],
                 'mainImage':
-                u'http://yourfriendsj.com/wp-content/uploads/2017/08/File_000-e1502154285989.jpeg',
+                u'http://yourfriendsj.com/wp-content/uploads/2017/08/File_005.jpeg',
                 'publishedTime':
-                '2017-08-08T02:20:11+00:00',
+                '2017-08-24T00:00:00+00:00',
             })
