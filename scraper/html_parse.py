@@ -1,6 +1,9 @@
+import logging
 import urlparse
 
 from scrapy import http
+
+from common import errors
 
 import hey_keto_mama
 import ingredients
@@ -14,25 +17,26 @@ import ruled_me
 import titles
 import your_friends_j
 
+_DEFAULT_GET_SCRAPER_FN = lambda url: _find_scraper(url)
 
-def parse(metadata, html):
+logger = logging.getLogger(__name__)
+
+
+def parse(metadata, html, get_scraper_fn=_DEFAULT_GET_SCRAPER_FN):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=metadata['url'], body=html)
 
-    scraper = _find_scraper(metadata['url'])
+    scraper = get_scraper_fn(metadata['url'])
 
     title = titles.canonicalize(scraper.scrape_title(response, metadata))
-
-    ingredients = _parse_ingredients(
-        scraper.scrape_ingredients(response, metadata))
 
     return {
         'url': metadata['url'],
         'title': title,
-        'category': scraper.scrape_category(response, metadata),
+        'category': _parse_category(scraper, response, metadata),
         'mainImage': scraper.scrape_image(response, metadata),
-        'ingredients': ingredients,
-        'publishedTime': scraper.scrape_published_time(response, metadata),
+        'ingredients': _parse_ingredients(scraper, response, metadata),
+        'publishedTime': _parse_published_time(scraper, response, metadata),
     }
 
 
@@ -54,7 +58,33 @@ def _find_scraper(url):
         raise ValueError('Unexpected domain: %s' % domain)
 
 
-def _parse_ingredients(ingredients_raw):
+def _parse_category(scraper, response, metadata):
+    try:
+        return scraper.scrape_category(response, metadata)
+    except Exception as e:
+        logger.error('Failed to parse category from %s: %s', metadata['url'],
+                     e.message)
+        return None
+
+
+def _parse_published_time(scraper, response, metadata):
+    try:
+        return scraper.scrape_published_time(response, metadata)
+    except Exception as e:
+        logger.error('Failed to parse published time from %s: %s',
+                     metadata['url'], e.message)
+        return None
+
+
+def _parse_ingredients(scraper, response, metadata):
+    try:
+        ingredients_raw = scraper.scrape_ingredients(response, metadata)
+    except errors.NoRecipeFoundError:
+        raise
+    except Exception as e:
+        logger.error('Failed to parse ingredients from %s: %s', metadata['url'],
+                     e.message)
+        return []
     ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
     # Remove empty ingredients.
     return [p for p in ingredients_parsed if p]
