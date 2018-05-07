@@ -28,13 +28,11 @@ def parse(metadata, html, get_scraper_fn=_DEFAULT_GET_SCRAPER_FN):
 
     scraper = get_scraper_fn(metadata['url'])
 
-    title = titles.canonicalize(scraper.scrape_title(response, metadata))
-
     return {
         'url': metadata['url'],
-        'title': title,
+        'title': _parse_title(scraper, response, metadata),
         'category': _parse_category(scraper, response, metadata),
-        'mainImage': scraper.scrape_image(response, metadata),
+        'mainImage': _parse_main_image(scraper, response, metadata),
         'ingredients': _parse_ingredients(scraper, response, metadata),
         'publishedTime': _parse_published_time(scraper, response, metadata),
     }
@@ -58,6 +56,18 @@ def _find_scraper(url):
         raise ValueError('Unexpected domain: %s' % domain)
 
 
+def _parse_title(scraper, response, metadata):
+    title_raw = scraper.scrape_title(response, metadata)
+    if not title_raw:
+        raise errors.NoRecipeFoundError(
+            'Failed to scrape required field: title for %s' % metadata['url'])
+    title_canonicalized = titles.canonicalize(title_raw)
+    if not title_canonicalized:
+        raise errors.NoRecipeFoundError(
+            'Failed to scrape required field: title for %s' % metadata['url'])
+    return title_canonicalized
+
+
 def _parse_category(scraper, response, metadata):
     try:
         return scraper.scrape_category(response, metadata)
@@ -65,6 +75,15 @@ def _parse_category(scraper, response, metadata):
         logger.error('Failed to parse category from %s: %s', metadata['url'],
                      e.message)
         return None
+
+
+def _parse_main_image(scraper, response, metadata):
+    main_image = scraper.scrape_image(response, metadata)
+    if not main_image:
+        raise errors.NoRecipeFoundError(
+            'Failed to scrape required field: mainImage for %s' %
+            metadata['url'])
+    return main_image
 
 
 def _parse_published_time(scraper, response, metadata):

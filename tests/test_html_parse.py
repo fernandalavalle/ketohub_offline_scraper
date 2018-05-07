@@ -139,6 +139,38 @@ class HtmlParseUnitTest(unittest.TestCase):
                 html='dummy file contents',
                 get_scraper_fn=self.mock_get_scraper_fn)
 
+    def test_raises_NoRecipeFoundError_if_title_is_missing(self):
+        self.mock_scraper.scrape_title.return_value = None
+
+        self.mock_scraper.scrape_category.return_value = 'Dinner'
+        self.mock_scraper.scrape_ingredients.return_value = [u'salt', u'water']
+        self.mock_scraper.scrape_image.return_value = 'http://a.b.com/img.jpg'
+        self.mock_scraper.scrape_published_time.return_value = (
+            '2018-05-05T12:28:35+00:00')
+        with self.assertRaises(errors.NoRecipeFoundError):
+            html_parse.parse(
+                metadata={
+                    'url': 'http://ignored.url',
+                },
+                html='dummy file contents',
+                get_scraper_fn=self.mock_get_scraper_fn)
+
+    def test_raises_NoRecipeFoundError_if_title_is_empty(self):
+        self.mock_scraper.scrape_title.return_value = ''
+
+        self.mock_scraper.scrape_category.return_value = 'Dinner'
+        self.mock_scraper.scrape_ingredients.return_value = [u'salt', u'water']
+        self.mock_scraper.scrape_image.return_value = 'http://a.b.com/img.jpg'
+        self.mock_scraper.scrape_published_time.return_value = (
+            '2018-05-05T12:28:35+00:00')
+        with self.assertRaises(errors.NoRecipeFoundError):
+            html_parse.parse(
+                metadata={
+                    'url': 'http://ignored.url',
+                },
+                html='dummy file contents',
+                get_scraper_fn=self.mock_get_scraper_fn)
+
     def test_passes_through_exception_on_image(self):
         self.mock_scraper.scrape_image.side_effect = ValueError(
             'dummy image scrape exception')
@@ -150,6 +182,38 @@ class HtmlParseUnitTest(unittest.TestCase):
             '2018-05-05T12:28:35+00:00')
 
         with self.assertRaises(ValueError):
+            html_parse.parse(
+                metadata={
+                    'url': 'http://ignored.url',
+                },
+                html='dummy file contents',
+                get_scraper_fn=self.mock_get_scraper_fn)
+
+    def test_raises_NoRecipeFoundError_if_main_image_is_missing(self):
+        self.mock_scraper.scrape_image.return_value = None
+
+        self.mock_scraper.scrape_title.return_value = 'Dummy Hot Dogs'
+        self.mock_scraper.scrape_category.return_value = 'Dinner'
+        self.mock_scraper.scrape_ingredients.return_value = [u'salt', u'water']
+        self.mock_scraper.scrape_published_time.return_value = (
+            '2018-05-05T12:28:35+00:00')
+        with self.assertRaises(errors.NoRecipeFoundError):
+            html_parse.parse(
+                metadata={
+                    'url': 'http://ignored.url',
+                },
+                html='dummy file contents',
+                get_scraper_fn=self.mock_get_scraper_fn)
+
+    def test_raises_NoRecipeFoundError_if_main_image_is_empty(self):
+        self.mock_scraper.scrape_image.return_value = ''
+
+        self.mock_scraper.scrape_title.return_value = 'Dummy Hot Dogs'
+        self.mock_scraper.scrape_category.return_value = 'Dinner'
+        self.mock_scraper.scrape_ingredients.return_value = [u'salt', u'water']
+        self.mock_scraper.scrape_published_time.return_value = (
+            '2018-05-05T12:28:35+00:00')
+        with self.assertRaises(errors.NoRecipeFoundError):
             html_parse.parse(
                 metadata={
                     'url': 'http://ignored.url',
@@ -559,6 +623,18 @@ class HtmlParseTest(unittest.TestCase):
                 'publishedTime':
                 '2017-11-03T10:00:53+00:00',
             })
+
+    def test_raises_exception_on_queen_bs_page_without_recipe(self):
+        with self.assertRaises(errors.NoRecipeFoundError):
+            html_parse.parse(
+                {
+                    'url':
+                    'http://queenbsincredibleedibles.com/category/baking/',
+                    'referer':
+                    'http://queenbsincredibleedibles.com/category/keto/',
+                },
+                _read_test_file(
+                    'queenbsincredibleedibles-com_category_baking.html'))
 
     def test_scrapes_your_friends_j_recipe(self):
         self.assertEqual(

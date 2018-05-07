@@ -1,4 +1,5 @@
 from common import opengraph
+from common import errors
 
 
 def scrape_title(response, _=None):
@@ -16,7 +17,7 @@ def scrape_image(response, _=None):
     opengraph_url = opengraph.find_image(response)
     if opengraph_url:
         return opengraph_url
-    return None
+    raise errors.NoRecipeFoundError('Could not find image for recipe')
 
 
 def scrape_ingredients(response, _=None):
