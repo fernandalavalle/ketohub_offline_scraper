@@ -372,6 +372,40 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-10-30T12:00:22+00:00',
             })
 
+    def test_scrapes_ketogasm_recipe_with_html_encoded_ingredients(self):
+        self.assertEqual(
+            html_parse.
+            parse({
+                'url':
+                'https://ketogasm.com/smoked-sausage-frittata-recipe-with-spinach-mushroom/',
+                'referer':
+                'https://ketogasm.com/recipe-index/?fwp_recipes_filters=recipe',
+            },
+                  _read_test_file(
+                      'ketogasm-com_smoked-sausage-frittata-recipe-with-spinach-mushroom.html'
+                  )),
+            {
+                'title':
+                u'Smoked Sausage Frittata with Spinach and Mushroom',
+                'url':
+                'https://ketogasm.com/smoked-sausage-frittata-recipe-with-spinach-mushroom/',
+                'category':
+                'breakfast',
+                'ingredients': [
+                    u'spinach',
+                    u'ghee',
+                    u'mushrooms',
+                    u'smoked sausage',
+                    u'garlic',
+                    u'salt & pepper',
+                    u'eggs',
+                ],
+                'mainImage':
+                u'https://cdn1.ketogasm.com/wp-content/uploads/2017/11/1-smoked-sausage-frittata-recipe-spinach-mushroom-low-carb-keto-dairy-free.jpg',
+                'publishedTime':
+                '2017-11-17T12:00:07+00:00',
+            })
+
     def test_fails_on_ketogasm_video_recipes(self):
         with self.assertRaises(errors.NoRecipeFoundError):
             html_parse.parse({

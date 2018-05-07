@@ -1,3 +1,4 @@
+import HTMLParser
 import logging
 import urlparse
 
@@ -69,6 +70,7 @@ class _Parser(object):
         self._scraper = scraper
         self._response = response
         self._metadata = metadata
+        self._html_parser = HTMLParser.HTMLParser()
 
     def parse_title(self):
         title_raw = self._scraper.scrape_title(self._response, self._metadata)
@@ -118,6 +120,9 @@ class _Parser(object):
             logger.error('Failed to parse ingredients from %s: %s',
                          self._metadata['url'], e.message)
             return []
-        ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
+        ingredients_parsed = [
+            ingredients.parse(self._html_parser.unescape(i))
+            for i in ingredients_raw
+        ]
         # Remove empty ingredients.
         return [p for p in ingredients_parsed if p]
