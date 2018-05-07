@@ -28,13 +28,15 @@ def parse(metadata, html, get_scraper_fn=_DEFAULT_GET_SCRAPER_FN):
 
     scraper = get_scraper_fn(metadata['url'])
 
+    parser = _Parser(scraper, response, metadata)
+
     return {
         'url': metadata['url'],
-        'title': _parse_title(scraper, response, metadata),
-        'category': _parse_category(scraper, response, metadata),
-        'mainImage': _parse_main_image(scraper, response, metadata),
-        'ingredients': _parse_ingredients(scraper, response, metadata),
-        'publishedTime': _parse_published_time(scraper, response, metadata),
+        'title': parser.parse_title(),
+        'category': parser.parse_category(),
+        'mainImage': parser.parse_main_image(),
+        'ingredients': parser.parse_ingredients(),
+        'publishedTime': parser.parse_published_time(),
     }
 
 
@@ -56,59 +58,66 @@ def _find_scraper(url):
         raise ValueError('Unexpected domain: %s' % domain)
 
 
-def _parse_title(scraper, response, metadata):
-    title_raw = scraper.scrape_title(response, metadata)
-    if not title_raw:
-        raise errors.NoRecipeFoundError(
-            'Failed to scrape required field: title for %s' % metadata['url'])
-    title_canonicalized = titles.canonicalize(title_raw)
-    if not title_canonicalized:
-        raise errors.NoRecipeFoundError(
-            'Failed to scrape required field: title for %s' % metadata['url'])
-    return title_canonicalized
-
-
-def _parse_category(scraper, response, metadata):
-    try:
-        return scraper.scrape_category(response, metadata)
-    except Exception as e:
-        logger.error('Failed to parse category from %s: %s', metadata['url'],
-                     e.message)
-        return None
-
-
-def _parse_main_image(scraper, response, metadata):
-    main_image = scraper.scrape_image(response, metadata)
-    if not main_image:
-        raise errors.NoRecipeFoundError(
-            'Failed to scrape required field: mainImage for %s' %
-            metadata['url'])
-    return main_image
-
-
-def _parse_published_time(scraper, response, metadata):
-    try:
-        return scraper.scrape_published_time(response, metadata)
-    except Exception as e:
-        logger.error('Failed to parse published time from %s: %s',
-                     metadata['url'], e.message)
-        return None
-
-
-def _parse_ingredients(scraper, response, metadata):
-    try:
-        ingredients_raw = scraper.scrape_ingredients(response, metadata)
-    except errors.NoRecipeFoundError:
-        raise
-    except Exception as e:
-        logger.error('Failed to parse ingredients from %s: %s', metadata['url'],
-                     e.message)
-        return []
-    ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
-    # Remove empty ingredients.
-    return [p for p in ingredients_parsed if p]
-
-
 def _parse_domain(url):
     domain_parts = urlparse.urlparse(url).netloc.split('.')
     return '.'.join(domain_parts[-2:])
+
+
+class _Parser(object):
+
+    def __init__(self, scraper, response, metadata):
+        self._scraper = scraper
+        self._response = response
+        self._metadata = metadata
+
+    def parse_title(self):
+        title_raw = self._scraper.scrape_title(self._response, self._metadata)
+        if not title_raw:
+            raise errors.NoRecipeFoundError(
+                'Failed to scrape required field: title for %s' %
+                self._metadata['url'])
+        title_canonicalized = titles.canonicalize(title_raw)
+        if not title_canonicalized:
+            raise errors.NoRecipeFoundError(
+                'Failed to scrape required field: title for %s' %
+                self._metadata['url'])
+        return title_canonicalized
+
+    def parse_category(self):
+        try:
+            return self._scraper.scrape_category(self._response, self._metadata)
+        except Exception as e:
+            logger.error('Failed to parse category from %s: %s',
+                         self._metadata['url'], e.message)
+            return None
+
+    def parse_main_image(self):
+        main_image = self._scraper.scrape_image(self._response, self._metadata)
+        if not main_image:
+            raise errors.NoRecipeFoundError(
+                'Failed to scrape required field: mainImage for %s' %
+                self._metadata['url'])
+        return main_image
+
+    def parse_published_time(self):
+        try:
+            return self._scraper.scrape_published_time(self._response,
+                                                       self._metadata)
+        except Exception as e:
+            logger.error('Failed to parse published time from %s: %s',
+                         self._metadata['url'], e.message)
+            return None
+
+    def parse_ingredients(self):
+        try:
+            ingredients_raw = self._scraper.scrape_ingredients(
+                self._response, self._metadata)
+        except errors.NoRecipeFoundError:
+            raise
+        except Exception as e:
+            logger.error('Failed to parse ingredients from %s: %s',
+                         self._metadata['url'], e.message)
+            return []
+        ingredients_parsed = [ingredients.parse(i) for i in ingredients_raw]
+        # Remove empty ingredients.
+        return [p for p in ingredients_parsed if p]
