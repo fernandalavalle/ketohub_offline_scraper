@@ -43,8 +43,8 @@ def scrape_ingredients(response, _=None):
 
 def scrape_published_time(response, _=None):
     schema = recipe_schema.read(response)
-    return parser.parse(
-        schema['datePublished']).replace(tzinfo=pytz.UTC).isoformat()
+    return parser.parse(schema['datePublished']).replace(
+        tzinfo=pytz.UTC).isoformat()
 
 
 def _category_from_url(url):

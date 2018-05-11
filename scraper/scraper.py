@@ -41,8 +41,8 @@ def main(args):
             logging.warn('No recipe found %s: %s', recipe_key, ex)
         except Exception as ex:
             logging.error('Failed to parse %s: %s', recipe_key, ex)
-    logging.info('Parsed %d/%d successfully', len(parsed),
-                 len(os.listdir(args.input_root)))
+    logging.info('Parsed %d/%d successfully',
+                 len(parsed), len(os.listdir(args.input_root)))
     print json.dumps(parsed, sort_keys=True, indent=2)
 
 

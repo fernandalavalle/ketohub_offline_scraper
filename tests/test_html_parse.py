@@ -425,13 +425,15 @@ class HtmlParseTest(unittest.TestCase):
         self.mock_ingredient_parser.side_effect = parsed_ingredients
 
         self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://www.heyketomama.com/keto-white-chicken-chili/',
-                'referer':
-                'https://www.heyketomama.com/category/recipes/',
-            }, _read_test_file('heyketomama-com_keto-white-chicken-chili.html'),
-                             'http://mock.ingredient.parser'),
+            html_parse.parse(
+                {
+                    'url':
+                    'https://www.heyketomama.com/keto-white-chicken-chili/',
+                    'referer': 'https://www.heyketomama.com/category/recipes/',
+                },
+                _read_test_file(
+                    'heyketomama-com_keto-white-chicken-chili.html'),
+                'http://mock.ingredient.parser'),
             {
                 'title':
                 'Keto White Chicken Chili',
@@ -448,16 +450,16 @@ class HtmlParseTest(unittest.TestCase):
             })
 
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'1 lb chicken', u'1.5 cups chicken broth',
-                u'2 garlic cloves, finely minced',
-                u'1 4.5oz can chopped green chiles', u'1 diced jalapeno',
-                u'1 diced green pepper', u'1/4 cup diced onion',
-                u'4 tbsp butter', u'1/4 cup heavy whipping cream',
-                u'4 oz cream cheese', u'2 tsp cumin', u'1 tsp oregano',
-                u'1/4 tsp cayenne (optional)', u'Salt and Pepper to taste'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'1 lb chicken', u'1.5 cups chicken broth',
+                 u'2 garlic cloves, finely minced',
+                 u'1 4.5oz can chopped green chiles', u'1 diced jalapeno',
+                 u'1 diced green pepper', u'1/4 cup diced onion',
+                 u'4 tbsp butter', u'1/4 cup heavy whipping cream',
+                 u'4 oz cream cheese', u'2 tsp cumin', u'1 tsp oregano',
+                 u'1/4 tsp cayenne (optional)', u'Salt and Pepper to taste'
+             ])
 
     def test_scrapes_ketoconnect_recipe(self):
         parsed_ingredients = [{
@@ -541,7 +543,8 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
                 'referer':
                 'https://www.ketoconnect.net/main-dishes/',
-            }, _read_test_file('low-carb-pizza-crust.html'),
+            },
+                             _read_test_file('low-carb-pizza-crust.html'),
                              'http://mock.ingredient.parser'),
             {
                 'title':
@@ -558,13 +561,13 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-10-08T09:52:09+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'Coconut flour', u'psyilium husk powder', u'active dry yeast',
-                u'Baking powder', u'salt', u'olive oil', u'Water', u'eggs',
-                u'minced garlic', u'Red Pepper Flakes',
-                u'dried minced onion flakes', u'Oregano'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'Coconut flour', u'psyilium husk powder', u'active dry yeast',
+                 u'Baking powder', u'salt', u'olive oil', u'Water', u'eggs',
+                 u'minced garlic', u'Red Pepper Flakes',
+                 u'dried minced onion flakes', u'Oregano'
+             ])
 
     def test_scrapes_ruled_me_recipe(self):
         parsed_ingredients = [{
@@ -660,14 +663,14 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-10-03T11:00:54+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'2 tablespoons poppy seeds', u'2 tablespoons sesame seeds',
-                u'1 teaspoon onion flakes', u'1 teaspoon garlic flakes',
-                u'4 ounces goat cheese', u'1 medium (119 g) red bell pepper',
-                u'\xbd cup sliced baby portobello mushrooms',
-                u'4 cups (80 g) arugula', u'1 tablespoon avocado oil'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'2 tablespoons poppy seeds', u'2 tablespoons sesame seeds',
+                 u'1 teaspoon onion flakes', u'1 teaspoon garlic flakes',
+                 u'4 ounces goat cheese', u'1 medium (119 g) red bell pepper',
+                 u'\xbd cup sliced baby portobello mushrooms',
+                 u'4 cups (80 g) arugula', u'1 tablespoon avocado oil'
+             ])
 
     def test_scrapes_ketogasm_recipe(self):
         parsed_ingredients = [{
@@ -765,14 +768,14 @@ class HtmlParseTest(unittest.TestCase):
             })
 
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'6 pounds pork spare ribs', u'Hickory wood chips/pellets',
-                u'2 tbsp paprika', u'2 tbsp salt', u'2 tbsp pepper',
-                u'1 tsp onion powder', u'1 tsp chili powder',
-                u'1/2 tsp ground mustard seed', u'1/4 cup coconut aminos',
-                u'2 tbsp chili garlic sauce', u'1 tbsp yellow mustard'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'6 pounds pork spare ribs', u'Hickory wood chips/pellets',
+                 u'2 tbsp paprika', u'2 tbsp salt', u'2 tbsp pepper',
+                 u'1 tsp onion powder', u'1 tsp chili powder',
+                 u'1/2 tsp ground mustard seed', u'1/4 cup coconut aminos',
+                 u'2 tbsp chili garlic sauce', u'1 tbsp yellow mustard'
+             ])
 
     def test_scrapes_ketogasm_recipe_with_html_encoded_ingredients(self):
         parsed_ingredients = [{
@@ -932,13 +935,15 @@ class HtmlParseTest(unittest.TestCase):
         }]
         self.mock_ingredient_parser.side_effect = parsed_ingredients
         self.assertEqual(
-            html_parse.parse({
-                'url':
-                'https://ketosizeme.com/keto-baked-spaghetti/',
-                'referer':
-                'https://ketosizeme.com/ketogenic-diet-recipes-index/',
-            }, _read_test_file('ketosizeme-com_keto-baked-spaghetti.html'),
-                             'http://mock.ingredient.parser'),
+            html_parse.parse(
+                {
+                    'url':
+                    'https://ketosizeme.com/keto-baked-spaghetti/',
+                    'referer':
+                    'https://ketosizeme.com/ketogenic-diet-recipes-index/',
+                },
+                _read_test_file('ketosizeme-com_keto-baked-spaghetti.html'),
+                'http://mock.ingredient.parser'),
             {
                 'title':
                 u'Keto Baked Spaghetti',
@@ -954,16 +959,16 @@ class HtmlParseTest(unittest.TestCase):
                 '2015-10-20T03:09:44+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'1 lb Ground Beef (cooked & drained)',
-                u'4 cups Spaghetti Squash (cooked)',
-                u'1 container Wild Oats Organic Tomato Basil Pasta Sauce',
-                u'1 1/2 cups Frigo Shredded Parmesan Cheese',
-                u'3 1/2 cups Low Moisture Part-skim Mozzarella Cheese',
-                u'1 tsp Wild Oats Organic Chili powder', u'1/2 tsp Oregano',
-                u'2 Garlic Cloves', u'1 Large Egg'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'1 lb Ground Beef (cooked & drained)',
+                 u'4 cups Spaghetti Squash (cooked)',
+                 u'1 container Wild Oats Organic Tomato Basil Pasta Sauce',
+                 u'1 1/2 cups Frigo Shredded Parmesan Cheese',
+                 u'3 1/2 cups Low Moisture Part-skim Mozzarella Cheese',
+                 u'1 tsp Wild Oats Organic Chili powder', u'1/2 tsp Oregano',
+                 u'2 Garlic Cloves', u'1 Large Egg'
+             ])
 
     def test_scrapes_ketovangelist_kitchen_recipe(self):
         parsed_ingredients = [{
@@ -1030,13 +1035,13 @@ class HtmlParseTest(unittest.TestCase):
                 '2016-12-19T20:29:38+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'7 oz. / 200g almond flour (blanched ground almonds)',
-                u'1 oz. / 30g chia seeds,\xa0finely ground',
-                u'2\xbd oz. / 70g xylitol', u'1 tsp. xanthan gum',
-                u'Zest of 2 lemons', u'3 oz. / 85g cold butter'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'7 oz. / 200g almond flour (blanched ground almonds)',
+                 u'1 oz. / 30g chia seeds,\xa0finely ground',
+                 u'2\xbd oz. / 70g xylitol', u'1 tsp. xanthan gum',
+                 u'Zest of 2 lemons', u'3 oz. / 85g cold butter'
+             ])
 
     def test_scrapes_ketovangelist_kitchen_recipe_unexpected_ingredients(self):
         parsed_ingredients = [
@@ -1243,7 +1248,8 @@ class HtmlParseTest(unittest.TestCase):
                 {
                     'url': 'https://lowcarbyum.com/baked-sea-scallops/',
                     'referer': 'https://lowcarbyum.com/recipes/',
-                }, _read_test_file('lowcarbyum-com_baked-sea-scallops.html'),
+                },
+                _read_test_file('lowcarbyum-com_baked-sea-scallops.html'),
                 'http://mock.ingredient.parser'),
             {
                 'title':
@@ -1335,11 +1341,11 @@ class HtmlParseTest(unittest.TestCase):
                 '2016-11-19T10:26:25+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'12 slices of NatureRaised Farms\xae Bacon', u'12  large eggs',
-                u'8 ounces cheddar cheese (grated)'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'12 slices of NatureRaised Farms\xae Bacon',
+                 u'12  large eggs', u'8 ounces cheddar cheese (grated)'
+             ])
 
     def test_scrapes_queen_bs_recipe(self):
         parsed_ingredients = [
@@ -1515,14 +1521,14 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-11-03T10:00:53+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'6 cups bread cubes (made with KetoFoccacia)',
-                u'1.5 cups chicken stock or turkey stock',
-                u'1 tsp fresh rosemary', u'1 tsp poultry seasoning',
-                u'1 tbsp garlic powder', u'1 medium onion', u'3 stalks celery',
-                u'3 tbsp butter or olive oil', u'Salt and pepper'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'6 cups bread cubes (made with KetoFoccacia)',
+                 u'1.5 cups chicken stock or turkey stock',
+                 u'1 tsp fresh rosemary', u'1 tsp poultry seasoning',
+                 u'1 tbsp garlic powder', u'1 medium onion', u'3 stalks celery',
+                 u'3 tbsp butter or olive oil', u'Salt and pepper'
+             ])
 
     def test_raises_exception_on_queen_bs_page_without_recipe(self):
         with self.assertRaises(errors.NoRecipeFoundError):
@@ -1601,11 +1607,11 @@ class HtmlParseTest(unittest.TestCase):
                 '2017-08-24T00:00:00+00:00',
             })
         self.assertEqual(
-            [call[0][0] for call in self.mock_ingredient_parser.call_args_list],
-            [
-                u'8 Roma Tomatos', u'\xbd cup Diced Onions',
-                u'1 Diced Jalepeno', u'2 tsp Salt', u'1 tsp Pepper'
-            ])
+            [call[0][0]
+             for call in self.mock_ingredient_parser.call_args_list], [
+                 u'8 Roma Tomatos', u'\xbd cup Diced Onions',
+                 u'1 Diced Jalepeno', u'2 tsp Salt', u'1 tsp Pepper'
+             ])
 
 
 if __name__ == "__main__":

@@ -15,9 +15,7 @@ def parse(ingredient_raw, url):
         data=json.dumps({
             'ingredient': ingredient_raw
         }),
-        headers={
-            'Content-Type': 'application/json'
-        })
+        headers={'Content-Type': 'application/json'})
 
     try:
         response = urllib2.urlopen(request)
