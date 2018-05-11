@@ -35,13 +35,14 @@ def main(args):
         html_path = os.path.join(args.input_root, recipe_key, 'index.html')
         raw_html = open(html_path).read()
         try:
-            parsed[recipe_key] = html_parse.parse(metadata, raw_html)
+            parsed[recipe_key] = html_parse.parse(metadata, raw_html,
+                                                  args.parser_url)
         except errors.NoRecipeFoundError as ex:
             logging.warn('No recipe found %s: %s', recipe_key, ex)
         except Exception as ex:
             logging.error('Failed to parse %s: %s', recipe_key, ex)
-    logging.info('Parsed %d/%d successfully',
-                 len(parsed), len(os.listdir(args.input_root)))
+    logging.info('Parsed %d/%d successfully', len(parsed),
+                 len(os.listdir(args.input_root)))
     print json.dumps(parsed, sort_keys=True, indent=2)
 
 
@@ -50,4 +51,5 @@ if __name__ == '__main__':
         prog='KetoHub Offline HTML Scraper',
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-i', '--input_root', required=True)
+    parser.add_argument('-p', '--parser_url', required=True)
     main(parser.parse_args())

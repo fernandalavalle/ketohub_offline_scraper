@@ -13,8 +13,8 @@ def scrape_category(response, _=None):
     try:
         return _canonicalize_category(category_raw)
     except KeyError:
-        raise errors.NoRecipeFoundError('No recipe found. Category is ' +
-                                        category_raw)
+        raise errors.NoRecipeFoundError(
+            'No recipe found. Category is ' + category_raw)
 
 
 def scrape_image(response, _=None):

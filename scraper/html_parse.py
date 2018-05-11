@@ -23,13 +23,13 @@ _DEFAULT_GET_SCRAPER_FN = lambda url: _find_scraper(url)
 logger = logging.getLogger(__name__)
 
 
-def parse(metadata, html, get_scraper_fn=_DEFAULT_GET_SCRAPER_FN):
+def parse(metadata, html, parser_url, get_scraper_fn=_DEFAULT_GET_SCRAPER_FN):
     # Reconstruct the scrapy response from HTML.
     response = http.TextResponse(url=metadata['url'], body=html)
 
     scraper = get_scraper_fn(metadata['url'])
 
-    parser = _Parser(scraper, response, metadata)
+    parser = _Parser(scraper, response, metadata, parser_url)
 
     return {
         'url': metadata['url'],
@@ -66,10 +66,11 @@ def _parse_domain(url):
 
 class _Parser(object):
 
-    def __init__(self, scraper, response, metadata):
+    def __init__(self, scraper, response, metadata, parser_url):
         self._scraper = scraper
         self._response = response
         self._metadata = metadata
+        self._parser_url = parser_url
         self._html_parser = HTMLParser.HTMLParser()
 
     def parse_title(self):
@@ -120,9 +121,7 @@ class _Parser(object):
             logger.error('Failed to parse ingredients from %s: %s',
                          self._metadata['url'], e.message)
             return []
-        ingredients_parsed = [
-            ingredients.parse(self._html_parser.unescape(i))
+        return [
+            ingredients.parse(self._html_parser.unescape(i), self._parser_url)
             for i in ingredients_raw
         ]
-        # Remove empty ingredients.
-        return [p for p in ingredients_parsed if p]
