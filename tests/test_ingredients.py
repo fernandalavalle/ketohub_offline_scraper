@@ -30,22 +30,25 @@ class ParseIngredientTest(unittest.TestCase):
         self.addCleanup(urllib2_patch.stop)
         urllib2_patch.start()
 
-    def test_parse_successful_request_returns_dictionary(self):
+        self.parser = ingredients.IngredientParser('http://mockurl')
+
+    def test_parse_successful_request_returns_flattened_dict(self):
         self.mock_response.read.return_value = json.dumps({
-            "name":
-            "mock ingredient"
+            'ingredientParsed': {
+                'name': 'mock ingredient'
+            }
         })
-        self.assertTrue(
-            isinstance(
-                ingredients.parse('mock ingredient', 'http://mockurl'), dict))
+        actual = self.parser.parse('mock ingredient')
+        self.assertTrue(isinstance(actual, dict))
+        self.assertDictEqual(actual, {'name': 'mock ingredient'})
 
     def test_parse_raises_api_error_when_parser_returns_error_response(self):
         self.mock_urlopen.side_effect = MockHttpError()
         with self.assertRaises(ingredients.IngredientParserApiError):
-            ingredients.parse('mock ingredient', 'http://mockurl')
+            self.parser.parse('mock ingredient')
 
     def test_parse_raises_api_error_when_ingredient_parser_cannot_be_reached(
             self):
         self.mock_urlopen.side_effect = MockUrlError()
         with self.assertRaises(ingredients.IngredientParserApiError):
-            ingredients.parse('mock ingredient', 'http://mockurl')
+            self.parser.parse('mock ingredient')

@@ -21,8 +21,9 @@ class HtmlParseUnitTest(unittest.TestCase):
         self.mock_get_scraper_fn.return_value = self.mock_scraper
 
         self.mock_ingredient_parser = mock.Mock()
-        parser_patch = mock.patch.object(html_parse.ingredients, 'parse',
-                                         self.mock_ingredient_parser)
+        parser_patch = mock.patch.object(
+            html_parse.ingredients.IngredientParser, 'parse',
+            self.mock_ingredient_parser)
         self.addCleanup(parser_patch.stop)
         parser_patch.start()
 
@@ -56,29 +57,12 @@ class HtmlParseUnitTest(unittest.TestCase):
                 html='dummy file contents',
                 parser_url='http://mock.ingredient.parser',
                 get_scraper_fn=self.mock_get_scraper_fn), {
-                    'title':
-                    'Dummy Hot Dogs',
-                    'url':
-                    'http://ignored.url',
-                    'category':
-                    'Dinner',
-                    'ingredients': [{
-                        u'comment': None,
-                        u'name': u'salt',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }, {
-                        u'comment': None,
-                        u'name': u'water',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }],
-                    'mainImage':
-                    'http://a.b.com/img.jpg',
-                    'publishedTime':
-                    '2018-05-05T12:28:35+00:00',
+                    'title': 'Dummy Hot Dogs',
+                    'url': 'http://ignored.url',
+                    'category': 'Dinner',
+                    'ingredients': [u'salt', u'water'],
+                    'mainImage': 'http://a.b.com/img.jpg',
+                    'publishedTime': '2018-05-05T12:28:35+00:00',
                 })
 
     def test_absorbs_exception_on_category(self):
@@ -113,29 +97,12 @@ class HtmlParseUnitTest(unittest.TestCase):
                 html='dummy file contents',
                 parser_url='http://mock.ingredient.parser',
                 get_scraper_fn=self.mock_get_scraper_fn), {
-                    'title':
-                    'Dummy Hot Dogs',
-                    'url':
-                    'http://ignored.url',
-                    'category':
-                    None,
-                    'ingredients': [{
-                        u'comment': None,
-                        u'name': u'salt',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }, {
-                        u'comment': None,
-                        u'name': u'water',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }],
-                    'mainImage':
-                    'http://a.b.com/img.jpg',
-                    'publishedTime':
-                    '2018-05-05T12:28:35+00:00',
+                    'title': 'Dummy Hot Dogs',
+                    'url': 'http://ignored.url',
+                    'category': None,
+                    'ingredients': [u'salt', u'water'],
+                    'mainImage': 'http://a.b.com/img.jpg',
+                    'publishedTime': '2018-05-05T12:28:35+00:00',
                 })
 
     def test_absorbs_exception_on_ingredients(self):
@@ -194,29 +161,12 @@ class HtmlParseUnitTest(unittest.TestCase):
                 html='dummy file contents',
                 parser_url='http://mock.ingredient.parser',
                 get_scraper_fn=self.mock_get_scraper_fn), {
-                    'title':
-                    'Dummy Hot Dogs',
-                    'url':
-                    'http://ignored.url',
-                    'category':
-                    'Dinner',
-                    'ingredients': [{
-                        u'comment': None,
-                        u'name': u'salt',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }, {
-                        u'comment': None,
-                        u'name': u'water',
-                        u'other': None,
-                        u'quantity': None,
-                        u'unit': None
-                    }],
-                    'mainImage':
-                    'http://a.b.com/img.jpg',
-                    'publishedTime':
-                    None,
+                    'title': 'Dummy Hot Dogs',
+                    'url': 'http://ignored.url',
+                    'category': 'Dinner',
+                    'ingredients': [u'salt', u'water'],
+                    'mainImage': 'http://a.b.com/img.jpg',
+                    'publishedTime': None,
                 })
 
     def test_passes_through_exception_on_title(self):
@@ -330,9 +280,10 @@ class HtmlParseTest(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-        self.mock_ingredient_parser = mock.Mock(name='ingredient_parser')
-        parser_patch = mock.patch.object(html_parse.ingredients, 'parse',
-                                         self.mock_ingredient_parser)
+        self.mock_ingredient_parser = mock.Mock()
+        parser_patch = mock.patch.object(
+            html_parse.ingredients.IngredientParser, 'parse',
+            self.mock_ingredient_parser)
         self.addCleanup(parser_patch.stop)
         parser_patch.start()
 
@@ -441,8 +392,13 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.heyketomama.com/keto-white-chicken-chili/',
                 'category':
                 None,
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'chicken', u'chicken broth', u'garlic',
+                    u'4.5 ounces can chopped green chiles', u'jalapeno',
+                    u'green pepper', u'onion', u'tbsp butter',
+                    u'heavy whipping cream', u'cream cheese', u'tsp cumin',
+                    u'tsp oregano', u'cayenne', u'Salt and Pepper to taste'
+                ],
                 'mainImage':
                 'https://www.heyketomama.com/wp-content/uploads/2017/10/keto-white-chicken-chili-sm.png',
                 'publishedTime':
@@ -553,8 +509,13 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
                 'category':
                 'entree',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'Coconut flour', u'psyilium husk powder',
+                    u'tsp active dry yeast', u'1\\/2 tsp Baking powder',
+                    u'salt', u'olive oil', u'Water', u'eggs', u'garlic',
+                    u'1\\/2 tsp Red Pepper Flakes',
+                    u'1\\/2 tsp dried minced onion flakes', u'1\\/2 tsp Oregano'
+                ],
                 'mainImage':
                 u'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
                 'publishedTime':
@@ -655,8 +616,11 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ruled.me/charred-veggie-fried-goat-cheese-salad/',
                 'category':
                 'entree',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'poppy seeds', u'sesame seeds', u'onion flakes',
+                    u'garlic flakes', u'goat cheese', u'red bell pepper',
+                    u'baby portobello mushrooms', u'arugula', u'avocado oil'
+                ],
                 'mainImage':
                 'https://cdn4.ruled.me/wp-content/uploads/2017/09/fried-goat-cheese-salad-featured.jpg',
                 'publishedTime':
@@ -759,8 +723,13 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketogasm.com/smoked-pork-spare-ribs-chili-garlic-recipe/',
                 'category':
                 'entree',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'pork spare ribs', u'Hickory wood chips\\/pellets',
+                    u'paprika', u'tbsp salt', u'tbsp pepper',
+                    u'tsp onion powder', u'tsp chili powder',
+                    u'1\\/2 tsp ground mustard seed', u'coconut aminos',
+                    u'tbsp chili garlic sauce', u'tbsp yellow mustard'
+                ],
                 'mainImage':
                 'https://ketogasm.com/wp-content/uploads/2017/10/2-smoked-pork-spare-ribs-chili-garlic-sauce.jpg',
                 'publishedTime':
@@ -840,8 +809,10 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketogasm.com/smoked-sausage-frittata-recipe-with-spinach-mushroom/',
                 'category':
                 'breakfast',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'spinach', u'tsp ghee', u'mushrooms', u'sausage',
+                    u'garlic', u'salt &amp; pepper', u'eggs'
+                ],
                 'mainImage':
                 u'https://cdn1.ketogasm.com/wp-content/uploads/2017/11/1-smoked-sausage-frittata-recipe-spinach-mushroom-low-carb-keto-dairy-free.jpg',
                 'publishedTime':
@@ -951,8 +922,14 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketosizeme.com/keto-baked-spaghetti/',
                 'category':
                 'entree',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'Beef', u'Spaghetti Squash',
+                    u'container Wild Oats Organic Tomato Basil Pasta Sauce',
+                    u'Frigo Shredded Parmesan Cheese',
+                    u'Low Moisture Part-skim Mozzarella Cheese',
+                    u'tsp Wild Oats Organic Chili powder', u'tsp Oregano',
+                    u'Garlic Cloves', u'Large Egg'
+                ],
                 'mainImage':
                 u'https://ketosizeme.com/wp-content/uploads/2015/05/Low-Carb-Keto-Baked-Spaghetti-.jpg',
                 'publishedTime':
@@ -1027,8 +1004,10 @@ class HtmlParseTest(unittest.TestCase):
                 'http://www.ketovangelistkitchen.com/lemon-shortbread-cookies/',
                 'category':
                 'dessert',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'almond flour', u'chia seeds, \xa0finely ground',
+                    u'xylitol', u'xanthan gum', u'lemons', u'butter'
+                ],
                 'mainImage':
                 'http://www.ketovangelistkitchen.com/wp-content/uploads/2016/12/2013-5-27-Lemon-Shortbread-Cookies-7567.jpg',
                 'publishedTime':
@@ -1135,8 +1114,12 @@ class HtmlParseTest(unittest.TestCase):
                 'http://www.ketovangelistkitchen.com/creamy-cucumber-soup/',
                 'category':
                 'side',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'TBSP coconut oil oil', u'onion',
+                    u'English cucumbers, chopped', u'coconut milk',
+                    u'tsp sea salt', u'chopped fresh chives', u'avocados',
+                    u'TBSP heavy cream', u'TBSP white wine', u'onions'
+                ],
                 'mainImage':
                 u'http://www.ketovangelistkitchen.com/wp-content/uploads/2017/01/2012-10-19-Creamy-Cucumber-Soup-4907.jpg',
                 'publishedTime':
@@ -1258,8 +1241,12 @@ class HtmlParseTest(unittest.TestCase):
                 'https://lowcarbyum.com/baked-sea-scallops/',
                 'category':
                 'appetizer',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'sea scallops', u'garlic', u'butter', u'cheddar cheese',
+                    u'mozzarella', u'heavy cream', u'pork rind',
+                    u'jalape\xf1os', u'lemons', u'salt and black Pepper',
+                    u'parsley', u'hot water for soaking shells'
+                ],
                 'mainImage':
                 u'https://lowcarbyum.com/wp-content/uploads/2017/08/baked-sea-scallops-l.jpg',
                 'publishedTime':
@@ -1334,7 +1321,7 @@ class HtmlParseTest(unittest.TestCase):
                 'category':
                 'breakfast',
                 'ingredients':
-                parsed_ingredients,
+                [u'NatureRaised Farms\xae Bacon', u'eggs', u'cheddar cheese'],
                 'mainImage':
                 u'https://lowcarbyum.com/wp-content/uploads/2016/10/low-carb-egg-muffins-wrapped-bacon-sq.jpg',
                 'publishedTime':
@@ -1411,8 +1398,11 @@ class HtmlParseTest(unittest.TestCase):
                 'http://queenbsincredibleedibles.com/2017/09/19/dill-pickle-dip/',
                 'category':
                 None,
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'cream cheese', u'dill pickle juice', u'pickle',
+                    u'shredded Colby jack cheese', u'crisped bacon',
+                    u'scallions'
+                ],
                 'mainImage':
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/09/img_6266.jpg',
                 'publishedTime':
@@ -1513,8 +1503,12 @@ class HtmlParseTest(unittest.TestCase):
                 'http://queenbsincredibleedibles.com/2017/11/03/best-low-carb-gluten-free-stuffing-ever/',
                 'category':
                 None,
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'bread cubes', u'chicken stock or turkey stock',
+                    u'tsp fresh rosemary', u'tsp poultry seasoning',
+                    u'tbsp garlic powder', u'onion', u'celery', u'butter oil',
+                    u'Salt and pepper'
+                ],
                 'mainImage':
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/11/img_7054.jpg',
                 'publishedTime':
@@ -1599,8 +1593,10 @@ class HtmlParseTest(unittest.TestCase):
                 'http://yourfriendsj.com/recipes/pico-de-gallo-salsa/',
                 'category':
                 'condiment',
-                'ingredients':
-                parsed_ingredients,
+                'ingredients': [
+                    u'Roma Tomatos', u'Diced Onions', u'Diced Jalepeno',
+                    u'Salt', u'tsp Pepper'
+                ],
                 'mainImage':
                 u'http://yourfriendsj.com/wp-content/uploads/2017/08/File_005.jpeg',
                 'publishedTime':
@@ -1612,7 +1608,3 @@ class HtmlParseTest(unittest.TestCase):
                  u'8 Roma Tomatos', u'\xbd cup Diced Onions',
                  u'1 Diced Jalepeno', u'2 tsp Salt', u'1 tsp Pepper'
              ])
-
-
-if __name__ == "__main__":
-    unittest.main()
