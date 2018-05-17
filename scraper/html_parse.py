@@ -70,7 +70,7 @@ class _Parser(object):
         self._scraper = scraper
         self._response = response
         self._metadata = metadata
-        self._ingredient_parser = ingredients.IngredientParser(parser_url)
+        self._ingredient_parser = ingredients.Parser(parser_url)
         self._html_parser = HTMLParser.HTMLParser()
 
     def parse_title(self):
@@ -122,9 +122,7 @@ class _Parser(object):
                          self._metadata['url'], e.message)
             return []
 
-        ingredients_parsed = [
+        return [
             self._ingredient_parser.parse(self._html_parser.unescape(i))
             for i in ingredients_raw
         ]
-
-        return [p['name'] for p in ingredients_parsed if 'name' in p]
