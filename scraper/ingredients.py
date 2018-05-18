@@ -22,7 +22,7 @@ class Parser(object):
 
         Returns:
             String of 'name' element of the ingredient, for example:
-                'carrots's
+                'carrots'
 
         Raises:
             IngredientParserApiError: An error occurred accessing the ingredient
@@ -38,8 +38,11 @@ class Parser(object):
         try:
             response = urllib2.urlopen(request)
         except urllib2.HTTPError as e:
+            error_body = e.read()
+            if not error_body:
+                error_body = str(e)
             raise IngredientParserApiError(
                 'Request to parse ingredient, %s, failed with: %s' %
-                (ingredient_raw, e.message))
+                (ingredient_raw, error_body))
 
-        return json.loads(response.read())['ingredientParsed']
+        return json.loads(response.read())['ingredientParsed']['name']

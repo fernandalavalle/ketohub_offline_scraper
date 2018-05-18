@@ -48,13 +48,13 @@ class HtmlParseUnitTest(unittest.TestCase):
                     'title': 'Dummy Hot Dogs',
                     'url': 'http://ignored.url',
                     'category': 'Dinner',
-                    'ingredients': [  # yapf: disable
+                    'ingredients': [
                         u'fake parsed ingredient 1',
                         u'fake parsed ingredient 2'
                     ],
                     'mainImage': 'http://a.b.com/img.jpg',
                     'publishedTime': '2018-05-05T12:28:35+00:00',
-                })
+                })  # yapf: disable
 
     def test_absorbs_exception_on_category(self):
         self.mock_scraper.scrape_category.side_effect = ValueError(
@@ -77,13 +77,13 @@ class HtmlParseUnitTest(unittest.TestCase):
                     'title': 'Dummy Hot Dogs',
                     'url': 'http://ignored.url',
                     'category': None,
-                    'ingredients': [  # yapf: disable
+                    'ingredients': [
                         u'fake parsed ingredient 1',
                         u'fake parsed ingredient 2'
                     ],
                     'mainImage': 'http://a.b.com/img.jpg',
                     'publishedTime': '2018-05-05T12:28:35+00:00',
-                })
+                })  # yapf: disable
 
     def test_absorbs_exception_on_ingredients(self):
         self.mock_scraper.scrape_ingredients.side_effect = ValueError(
@@ -130,13 +130,13 @@ class HtmlParseUnitTest(unittest.TestCase):
                     'title': 'Dummy Hot Dogs',
                     'url': 'http://ignored.url',
                     'category': 'Dinner',
-                    'ingredients': [  # yapf: disable
+                    'ingredients': [
                         u'fake parsed ingredient 1',
                         u'fake parsed ingredient 2'
                     ],
                     'mainImage': 'http://a.b.com/img.jpg',
                     'publishedTime': None,
-                })
+                })  # yapf: disable
 
     def test_passes_through_exception_on_title(self):
         self.mock_scraper.scrape_title.side_effect = ValueError(
@@ -249,15 +249,9 @@ class HtmlParseTest(unittest.TestCase):
     def setUp(self):
         self.maxDiff = None
 
-        self.iterator = 1
-
-        def mock_parse():
-            next_ingredient = u'fake parsed ingredient %d' % self.iterator
-            self.iterator += 1
-            return next_ingredient
-
-        self.mock_ingredient_parser = mock.Mock(
-            side_effect=lambda x: mock_parse())
+        self.mock_ingredient_parser = mock.Mock(side_effect=[
+            u'fake parsed ingredient %d' % i for i in range(1, 100)
+        ])
         parser_patch = mock.patch.object(html_parse.ingredients.Parser, 'parse',
                                          self.mock_ingredient_parser)
         self.addCleanup(parser_patch.stop)
@@ -281,7 +275,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.heyketomama.com/keto-white-chicken-chili/',
                 'category':
                 None,
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -301,7 +295,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.heyketomama.com/wp-content/uploads/2017/10/keto-white-chicken-chili-sm.png',
                 'publishedTime':
                 '2017-10-30T01:02:11+00:00',
-            })
+            })   # yapf: disable
 
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'1 lb chicken'),
@@ -337,7 +331,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ketoconnect.net/recipe/low-carb-pizza-crust/',
                 'category':
                 'entree',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -355,7 +349,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'https://ketoconnect-apjirmx5iktkd7.netdna-ssl.com/wp-content/uploads/2017/10/low-carb-pizza-crust-slice-flat.jpg',
                 'publishedTime':
                 '2017-10-08T09:52:09+00:00',
-            })
+            })  # yapf: disable
 
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'Coconut flour'),
@@ -391,7 +385,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://www.ruled.me/charred-veggie-fried-goat-cheese-salad/',
                 'category':
                 'entree',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -406,7 +400,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://cdn4.ruled.me/wp-content/uploads/2017/09/fried-goat-cheese-salad-featured.jpg',
                 'publishedTime':
                 '2017-10-03T11:00:54+00:00',
-            })
+            })   # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'2 tablespoons poppy seeds'),
             mock.call(u'2 tablespoons sesame seeds'),
@@ -438,7 +432,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketogasm.com/smoked-pork-spare-ribs-chili-garlic-recipe/',
                 'category':
                 'entree',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -455,7 +449,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketogasm.com/wp-content/uploads/2017/10/2-smoked-pork-spare-ribs-chili-garlic-sauce.jpg',
                 'publishedTime':
                 '2017-10-30T12:00:22+00:00',
-            })
+            })  # yapf: disable
 
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'6 pounds pork spare ribs'),
@@ -490,7 +484,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketogasm.com/smoked-sausage-frittata-recipe-with-spinach-mushroom/',
                 'category':
                 'breakfast',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -503,7 +497,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'https://cdn1.ketogasm.com/wp-content/uploads/2017/11/1-smoked-sausage-frittata-recipe-spinach-mushroom-low-carb-keto-dairy-free.jpg',
                 'publishedTime':
                 '2017-11-17T12:00:07+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'10 oz spinach (raw)'),
             mock.call(u'1 tsp ghee'),
@@ -544,7 +538,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://ketosizeme.com/keto-baked-spaghetti/',
                 'category':
                 'entree',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -559,7 +553,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'https://ketosizeme.com/wp-content/uploads/2015/05/Low-Carb-Keto-Baked-Spaghetti-.jpg',
                 'publishedTime':
                 '2015-10-20T03:09:44+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'1 lb Ground Beef (cooked & drained)'),
             mock.call(u'4 cups Spaghetti Squash (cooked)'),
@@ -592,7 +586,7 @@ class HtmlParseTest(unittest.TestCase):
                 'http://www.ketovangelistkitchen.com/lemon-shortbread-cookies/',
                 'category':
                 'dessert',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -604,7 +598,7 @@ class HtmlParseTest(unittest.TestCase):
                 'http://www.ketovangelistkitchen.com/wp-content/uploads/2016/12/2013-5-27-Lemon-Shortbread-Cookies-7567.jpg',
                 'publishedTime':
                 '2016-12-19T20:29:38+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'7 oz. / 200g almond flour (blanched ground almonds)'),
             mock.call(u'1 oz. / 30g chia seeds,\xa0finely ground'),
@@ -633,7 +627,7 @@ class HtmlParseTest(unittest.TestCase):
                 'http://www.ketovangelistkitchen.com/creamy-cucumber-soup/',
                 'category':
                 'side',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -649,7 +643,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'http://www.ketovangelistkitchen.com/wp-content/uploads/2017/01/2012-10-19-Creamy-Cucumber-Soup-4907.jpg',
                 'publishedTime':
                 '2017-01-23T08:15:03+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'2 TBSP coconut oil or avocado oil'),
             mock.call(u'5 oz. / 140g onion, chopped'),
@@ -681,7 +675,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://lowcarbyum.com/baked-sea-scallops/',
                 'category':
                 'appetizer',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -699,7 +693,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'https://lowcarbyum.com/wp-content/uploads/2017/08/baked-sea-scallops-l.jpg',
                 'publishedTime':
                 '2017-08-11T05:26:46+00:00',
-            })
+            })  # yapf: disable
 
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(
@@ -749,7 +743,7 @@ class HtmlParseTest(unittest.TestCase):
                 'https://lowcarbyum.com/low-carb-egg-muffins-wrapped-bacon/',
                 'category':
                 'breakfast',
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3'
@@ -758,7 +752,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'https://lowcarbyum.com/wp-content/uploads/2016/10/low-carb-egg-muffins-wrapped-bacon-sq.jpg',
                 'publishedTime':
                 '2016-11-19T10:26:25+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'12 slices of NatureRaised Farms\xae Bacon'),
             mock.call(u'12  large eggs'),
@@ -784,7 +778,7 @@ class HtmlParseTest(unittest.TestCase):
                 'http://queenbsincredibleedibles.com/2017/09/19/dill-pickle-dip/',
                 'category':
                 None,
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -796,7 +790,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/09/img_6266.jpg',
                 'publishedTime':
                 '2017-09-19T10:00:46+00:00',
-            })
+            })   # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'8 ounces softened cream cheese'),
             mock.call(u'1/4 cup dill pickle juice'),
@@ -830,7 +824,7 @@ class HtmlParseTest(unittest.TestCase):
                 'http://queenbsincredibleedibles.com/2017/11/03/best-low-carb-gluten-free-stuffing-ever/',
                 'category':
                 None,
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -845,7 +839,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'http://queenbsincredibleedibles.com/wp-content/uploads/2017/11/img_7054.jpg',
                 'publishedTime':
                 '2017-11-03T10:00:53+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'6 cups bread cubes (made with KetoFoccacia)'),
             mock.call(u'1.5 cups chicken stock or turkey stock'),
@@ -890,7 +884,7 @@ class HtmlParseTest(unittest.TestCase):
                 'category':
                 'condiment',
 
-                'ingredients': [  # yapf: disable
+                'ingredients': [
                     u'fake parsed ingredient 1',
                     u'fake parsed ingredient 2',
                     u'fake parsed ingredient 3',
@@ -901,7 +895,7 @@ class HtmlParseTest(unittest.TestCase):
                 u'http://yourfriendsj.com/wp-content/uploads/2017/08/File_005.jpeg',
                 'publishedTime':
                 '2017-08-24T00:00:00+00:00',
-            })
+            })  # yapf: disable
         self.mock_ingredient_parser.assert_has_calls([
             mock.call(u'8 Roma Tomatos'),
             mock.call(u'\xbd cup Diced Onions'),

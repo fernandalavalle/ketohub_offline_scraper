@@ -20,15 +20,14 @@ class ParseTest(unittest.TestCase):
 
         self.parser = ingredients.Parser('http://mockurl')
 
-    def test_parse_successful_request_returns_flattened_dict(self):
+    def test_parse_successful_request_returns_string(self):
         self.mock_response.read.return_value = json.dumps({
             'ingredientParsed': {
                 'name': 'mock ingredient'
             }
         })
         actual = self.parser.parse('mock ingredient')
-        self.assertTrue(isinstance(actual, dict))
-        self.assertDictEqual(actual, {'name': 'mock ingredient'})
+        self.assertEqual(actual, 'mock ingredient')
 
     def test_parse_raises_api_error_when_parser_returns_error_response(self):
         mock_response = io.BytesIO('dummy server error')
